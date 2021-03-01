@@ -1,0 +1,2392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/uploads/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.elprup.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+
+  <meta name="description" content="成员变量的地址#include &lt;stdio.h&gt; #include &lt;stdlib.h&gt;  struct Test &amp;#123;     int a;int b; &amp;#125;;  int main() &amp;#123;     int *i &#x3D; (&amp;((Test*)0)-&gt;b);     printf(&quot;%d&quot;,i);      syste">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++代码例子集合">
+<meta property="og:url" content="http://www.elprup.com/2010/11/27/cpp-pieces/index.html">
+<meta property="og:site_name" content="elprup&#39;s blog">
+<meta property="og:description" content="成员变量的地址#include &lt;stdio.h&gt; #include &lt;stdlib.h&gt;  struct Test &amp;#123;     int a;int b; &amp;#125;;  int main() &amp;#123;     int *i &#x3D; (&amp;((Test*)0)-&gt;b);     printf(&quot;%d&quot;,i);      syste">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2010-11-27T22:52:25.000Z">
+<meta property="article:modified_time" content="2021-03-01T21:26:37.531Z">
+<meta property="article:author" content="elprup">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.elprup.com/2010/11/27/cpp-pieces/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>C++代码例子集合 | elprup's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59147356-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-59147356-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">elprup's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84%E5%9C%B0%E5%9D%80"><span class="nav-number">1.</span> <span class="nav-text">成员变量的地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#struct-%E5%AF%B9%E9%BD%90%E4%B8%80%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">struct 对齐一题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%81%E6%9C%89%E5%A4%8D%E5%88%B6%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%97%A0%E5%AE%9E%E7%8E%B0%E4%BB%8D%E7%84%B6%E5%8F%AF%E4%BB%A5%E8%B0%83%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">私有复制构造函数无实现仍然可以调用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%EF%BC%8C%E5%A4%8D%E5%88%B6%E6%9E%84%E9%80%A0%EF%BC%8C%E8%B5%8B%E5%80%BC%E5%87%BD%E6%95%B0%E4%BE%8B%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">构造，复制构造，赋值函数例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E4%BB%85%E6%9C%89%E5%A4%8D%E5%88%B6%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%97%B6%EF%BC%8C%E5%B0%86%E8%A6%86%E7%9B%96%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8C%E5%A4%8D%E5%88%B6%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">类仅有复制构造函数时，将覆盖默认构造函数和复制构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E5%BC%82%E5%B8%B8%EF%BC%9A%E5%A4%9A%E4%B8%AA-catch-%E5%8F%AA%E8%B5%B0%E4%B8%80%E4%B8%AA%E5%88%86%E6%94%AF"><span class="nav-number">6.</span> <span class="nav-text">c++异常：多个 catch 只走一个分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E5%87%BD%E6%95%B0%EF%BC%8C%E8%A6%86%E7%9B%96%E7%9A%84%E7%AC%94%E8%AF%95%E9%A2%98%E4%B8%80%E5%88%99"><span class="nav-number">7.</span> <span class="nav-text">虚函数，覆盖的笔试题一则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%B6%E7%B1%BB%E5%AF%B9%E8%B1%A1%E5%BC%95%E7%94%A8%E5%AD%90%E7%B1%BB%E5%AF%B9%E8%B1%A1%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%A4%9A%E6%80%81"><span class="nav-number">8.</span> <span class="nav-text">父类对象引用子类对象实现的多态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%99%9A%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%BF%85%E8%A6%81%E6%80%A7"><span class="nav-number">9.</span> <span class="nav-text">虚析构函数必要性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%BA%E5%BA%8F%E5%AF%B9-return-%E5%90%8C%E6%A0%B7%E9%80%82%E7%94%A8"><span class="nav-number">10.</span> <span class="nav-text">++,--顺序对 return 同样适用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E8%B4%9F%E5%AF%B9%E6%A8%A1%E8%BF%90%E7%AE%97%E7%9A%84%E5%BD%B1%E5%93%8D"><span class="nav-number">11.</span> <span class="nav-text">正负对模运算的影响</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E5%9B%9E%E5%BF%86%E4%BB%A3%E7%A0%81"><span class="nav-number">12.</span> <span class="nav-text">运算符重载回忆代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#new-malloc-%E5%8C%BA%E5%88%AB"><span class="nav-number">13.</span> <span class="nav-text">new malloc 区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E7%BB%84%E8%B5%84%E6%BA%90%E7%9A%84%E7%94%B3%E8%AF%B7%E5%92%8C%E9%87%8A%E6%94%BE"><span class="nav-number">14.</span> <span class="nav-text">对数组资源的申请和释放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E5%92%8C-delete-amp-object-%E4%B8%8D%E8%83%BD%E5%85%B1%E5%AD%98"><span class="nav-number">15.</span> <span class="nav-text">自定义析构函数和 delete &amp;object 不能共存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE%E5%90%8C%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0%E7%9A%84%E7%A7%81%E6%9C%89%E6%88%90%E5%91%98%EF%BC%8C%E5%8D%B4%E4%B8%8D%E8%83%BD%E8%AE%BF%E9%97%AE%E9%9D%9E%E5%90%8C%E7%B1%BB%E7%9A%84%E5%8F%82%E6%95%B0%E7%9A%84%E7%A7%81%E6%9C%89%E6%88%90%E5%91%98"><span class="nav-number">16.</span> <span class="nav-text">copy 构造函数可以访问同类型参数的私有成员，却不能访问非同类的参数的私有成员</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%90%E5%BC%8F%E7%9A%84-copy-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">17.</span> <span class="nav-text">隐式的 copy 构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E6%B2%89%E6%80%9D%E5%BD%95-%E4%BB%A3%E7%A0%81%E9%9B%86-2"><span class="nav-number">18.</span> <span class="nav-text">c++沉思录 代码集 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E6%B2%89%E6%80%9D%E5%BD%95-%E4%BB%A3%E7%A0%81%E9%9B%86-1"><span class="nav-number">19.</span> <span class="nav-text">c++沉思录 代码集 1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E5%8F%96%E5%9C%B0%E5%9D%80%E5%92%8C%E8%A7%A3%E5%BC%95%E7%94%A8"><span class="nav-number">20.</span> <span class="nav-text">函数指针的取地址和解引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0"><span class="nav-number">21.</span> <span class="nav-text">模板模板参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%E6%A8%A1%E6%9D%BF%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0"><span class="nav-number">22.</span> <span class="nav-text">声明模板友元函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E5%92%8C%E9%87%8D%E5%86%99%E7%9A%84for-each%E6%A8%A1%E6%9D%BF%E5%87%BD%E6%95%B0"><span class="nav-number">23.</span> <span class="nav-text">函数指针和重写的for_each模板函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1%E5%92%8C%E6%A8%A1%E6%9D%BF%E7%BB%93%E5%90%88%E4%B8%80%E4%BE%8B"><span class="nav-number">24.</span> <span class="nav-text">函数对象和模板结合一例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#const-reference-%E8%A2%AB%E5%BC%95%E7%94%A8%E5%AF%B9%E8%B1%A1%E5%8F%AF%E4%BF%AE%E6%94%B9%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">25.</span> <span class="nav-text">const reference 被引用对象可修改的例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E6%9D%BF%E7%B1%BB%E7%89%B9%E6%AE%8A%E5%8C%96"><span class="nav-number">26.</span> <span class="nav-text">模板类特殊化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6-%E7%9A%84%E7%BB%93%E5%90%88%E5%BE%8B%E6%98%AF%E4%BB%8E%E5%B7%A6%E5%BE%80%E5%8F%B3%E8%BF%98%E6%98%AF%E4%BB%8E%E5%8F%B3%E5%BE%80%E5%B7%A6"><span class="nav-number">27.</span> <span class="nav-text">运算符||的结合律是从左往右还是从右往左</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E4%B8%8D%E8%83%BD%E7%94%A8%E5%AF%B9%E8%B1%A1%E5%AE%9E%E4%BE%8B%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%80%81-%E5%9F%BA%E7%B1%BB%E5%92%8C%E7%BB%A7%E6%89%BF%E7%B1%BB%E5%AE%9E%E4%BE%8B%E8%BD%AC%E6%8D%A2%E6%97%B6%E5%87%BA%E7%8E%B0%E7%9A%84%E6%88%90%E5%91%98%E4%B8%A2%E5%A4%B1%EF%BC%88cut%EF%BC%89"><span class="nav-number">28.</span> <span class="nav-text">c++不能用对象实例实现多态&#x2F; 基类和继承类实例转换时出现的成员丢失（cut）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B%E5%92%8C%E6%95%B4%E5%BD%A2%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%92%8C%E6%AF%94%E8%BE%83"><span class="nav-number">29.</span> <span class="nav-text">枚举类型和整形的转换和比较</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gt-%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7%E6%AF%94-%E9%AB%98"><span class="nav-number">30.</span> <span class="nav-text">-&gt;的优先级比*高</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E5%BC%95%E7%94%A8%E5%A6%82%E4%BD%95%E5%A3%B0%E6%98%8E"><span class="nav-number">31.</span> <span class="nav-text">指针的引用如何声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E4%B8%AD%E9%9A%90%E8%97%8F%E8%A7%84%E5%88%99-%E7%9A%84%E9%81%BF%E5%85%8D"><span class="nav-number">32.</span> <span class="nav-text">c++中隐藏规则 的避免</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%B1%BB%E4%B8%AD%E5%AE%9A%E4%B9%89%E5%9F%BA%E7%B1%BB%E7%9A%84%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E6%A0%87%E7%AD%BE"><span class="nav-number">33.</span> <span class="nav-text">子类中定义基类的访问控制标签</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E7%B1%BB%E9%81%BF%E5%85%8D%E8%A6%86%E7%9B%96%EF%BC%8C%E8%B0%83%E7%94%A8%E7%88%B6%E7%B1%BB%E8%99%9A%E5%87%BD%E6%95%B0"><span class="nav-number">34.</span> <span class="nav-text">子类避免覆盖，调用父类虚函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%90%E6%9E%84%E5%87%BD%E6%95%B0%E4%B8%8D%E4%BC%9A-delete-%E6%8C%87%E9%92%88%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="nav-number">35.</span> <span class="nav-text">析构函数不会 delete 指针成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0%E5%8F%AF%E4%B8%BA-reference-%E6%88%96%E8%80%85-constant-reference"><span class="nav-number">36.</span> <span class="nav-text">copy 构造函数的参数可为 reference 或者 constant reference</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E8%BF%9B%E8%A1%8C%E4%BC%A0%E9%80%92%E6%97%B6%EF%BC%8Csizeof-%E5%8F%98%E5%8C%96"><span class="nav-number">37.</span> <span class="nav-text">数组进行传递时，sizeof 变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%8C%87%E9%92%88%E6%88%90%E5%91%98%E7%9A%84%E4%B8%80%E7%A7%8D%E7%AE%A1%E7%90%86%E6%96%B9%E6%B3%95%EF%BC%9A-%E5%80%BC%E5%92%8C%E6%8C%87%E9%92%88%E7%9A%84%E7%BB%93%E5%90%88"><span class="nav-number">38.</span> <span class="nav-text">类指针成员的一种管理方法： 值和指针的结合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%B5%B7%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E7%9A%84%E4%B8%80%E7%A7%8D%E5%8E%9F%E5%9B%A0-%E5%87%BD%E6%95%B0%E4%B8%AD-new-%E5%AF%B9%E8%B1%A1%EF%BC%8C%E6%B2%A1%E6%9C%89%E8%A2%AB-delete"><span class="nav-number">39.</span> <span class="nav-text">引起内存泄露的一种原因 函数中 new 对象，没有被 delete</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E5%B0%81%E8%A3%85%E6%88%90%E7%B1%BB%E2%80%93%E8%BF%90%E7%AE%97%E7%AC%A6-%E7%9A%84%E9%87%8D%E8%BD%BD"><span class="nav-number">40.</span> <span class="nav-text">函数调用封装成类–运算符()的重载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%9C%89%E6%8C%87%E9%92%88%E6%88%90%E5%91%98%E7%9A%84%E5%A4%84%E7%90%86%EF%BC%882%EF%BC%89%E4%BC%A0%E5%80%BC"><span class="nav-number">41.</span> <span class="nav-text">类有指针成员的处理（2）传值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#copy-%E5%92%8C-copy-assignment-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">42.</span> <span class="nav-text">copy 和 copy assignment 的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%9C%89%E6%8C%87%E9%92%88%E6%88%90%E5%91%98%E6%97%B6%E7%9A%84%E5%A4%84%E7%90%86%EF%BC%881%EF%BC%89%E6%8B%B7%E8%B4%9D%E6%97%B6%E5%A4%8D%E5%88%B6%E6%8C%87%E9%92%88"><span class="nav-number">43.</span> <span class="nav-text">类有指针成员时的处理（1）拷贝时复制指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8B%E5%85%83%E5%87%BD%E6%95%B0%E8%AE%BF%E9%97%AE%E7%A7%81%E6%9C%89%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="nav-number">44.</span> <span class="nav-text">友元函数访问私有成员变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E8%87%AA%E5%8A%A8%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E5%8F%AA%E8%83%BD%E4%B8%80%E6%AC%A1"><span class="nav-number">45.</span> <span class="nav-text">函数参数的自动隐式类型转换只能一次</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E6%97%B6%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E7%B1%BB%E6%88%90%E5%91%98%E7%9A%84%E7%B1%BB%E5%AE%9E%E4%BE%8B%E5%AE%9A%E4%B9%89%E6%96%B9%E5%BC%8F"><span class="nav-number">46.</span> <span class="nav-text">默认构造函数时可以使用的初始化类成员的类实例定义方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E5%86%85%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%AE%9E%E4%BE%8B%EF%BC%8C%E8%BF%94%E5%9B%9E%E5%AE%9E%E4%BE%8B%E6%98%AF%E5%90%A6%E6%9E%90%E6%9E%84%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">47.</span> <span class="nav-text">函数内定义类实例，返回实例是否析构的问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%86%85%E5%92%8C%E7%B1%BB%E5%A4%96%E8%BF%9B%E8%A1%8C%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">48.</span> <span class="nav-text">类内和类外进行运算符重载的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E9%A6%96%E6%AC%A1%E8%BF%90%E8%A1%8C%E6%97%B6%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%8C%85%E8%A3%85"><span class="nav-number">49.</span> <span class="nav-text">全局变量首次运行时初始化的包装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD-new-%E5%87%BD%E6%95%B0-%E5%AE%9E%E7%8E%B0%E5%AE%9A%E5%9D%80%E5%88%86%E9%85%8D%E7%B1%BB"><span class="nav-number">50.</span> <span class="nav-text">重载 new 函数 实现定址分配类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E6%88%90%E5%91%98%E7%B1%BB%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E9%A1%BA%E5%BA%8F"><span class="nav-number">51.</span> <span class="nav-text">类成员类构造函数调用顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89-const-%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%B1%BB-%E4%B8%8D%E8%83%BD%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">52.</span> <span class="nav-text">有 const 对象的类 不能使用默认构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%9D%E6%8C%81-const-member-function%EF%BC%8C%E5%AE%9E%E7%8E%B0%E4%BF%AE%E6%94%B9%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E7%9A%84-3-%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="nav-number">53.</span> <span class="nav-text">保持 const member function，实现修改成员变量的 3 种方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%88%E6%9C%89%E6%8C%91%E6%88%98%E6%80%A7%E7%9A%84%E9%A2%98%E7%9B%AE%EF%BC%88%E4%B8%8D%E6%96%AD%E6%9B%B4%E6%96%B0%EF%BC%89"><span class="nav-number">54.</span> <span class="nav-text">很有挑战性的题目（不断更新）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%B7%E8%B4%9D%E5%87%BD%E6%95%B0-%E4%BC%A0%E5%BC%95%E7%94%A8%E6%97%B6%E4%B8%8D%E8%B0%83%E7%94%A8%E6%8B%B7%E8%B4%9D%E5%87%BD%E6%95%B0-%E4%BC%A0%E5%80%BC%E6%97%B6%E8%B0%83%E7%94%A8%E6%8B%B7%E8%B4%9D%E5%87%BD%E6%95%B0"><span class="nav-number">55.</span> <span class="nav-text">拷贝函数 传引用时不调用拷贝函数 传值时调用拷贝函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F-%E9%9D%99%E6%80%81%E5%87%BD%E6%95%B0-%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">56.</span> <span class="nav-text">静态变量 静态函数 静态变量作为默认函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c-%E5%AE%9A%E4%B9%89%E7%B1%BB%E6%97%B6%E7%9A%84%E9%9A%90%E5%BC%8F%E6%8B%B7%E8%B4%9D%E5%87%BD%E6%95%B0%E5%92%8C%E9%9A%90%E5%BC%8F%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">57.</span> <span class="nav-text">c++定义类时的隐式拷贝函数和隐式构造函数</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="elprup"
+      src="/uploads/images/avatar.png">
+  <p class="site-author-name" itemprop="name">elprup</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/elprup" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;elprup" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/371973/elprup" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;371973&#x2F;elprup" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.elprup.com/2010/11/27/cpp-pieces/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/avatar.png">
+      <meta itemprop="name" content="elprup">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="elprup's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C++代码例子集合
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-11-28 06:52:25" itemprop="dateCreated datePublished" datetime="2010-11-28T06:52:25+08:00">2010-11-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-02 05:26:37" itemprop="dateModified" datetime="2021-03-02T05:26:37+08:00">2021-03-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="成员变量的地址"><a href="#成员变量的地址" class="headerlink" title="成员变量的地址"></a>成员变量的地址</h2><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Test
+&#123;
+    int a;int b;
+&#125;;
+
+int main()
+&#123;
+    int *i = (&amp;((Test*)0)-&gt;b);
+    printf(&quot;%d&quot;,i);
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<a id="more"></a>
+
+<h2 id="struct-对齐一题"><a href="#struct-对齐一题" class="headerlink" title="struct 对齐一题"></a>struct 对齐一题</h2><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct A
+&#123;
+    int a;
+    double b;
+    char c;
+    short d;
+&#125;;
+
+struct B
+&#123;
+    double b;
+    int a;
+    char c;
+    short d;
+&#125;;
+
+int main()
+&#123;
+    printf(&quot;%d\n&quot;,sizeof(A));
+    printf(&quot;%d\n&quot;,sizeof(B));
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>对齐规则： 类型必须从类型 size 的整数倍开始，结构体 size 必须为结构体内类型最大的整数倍。<br>struct A: int 4 double 8 必须从 8 开始，故为 16，char 为 17，short 必须从 2 字节整数倍，从 18 开始，故为 20，结构体必须为 8 的整数倍，所以必须为 24。<br>struct B:double 8,int 4,char 1 对齐到 14，从 short 开始 2，一共为 16</p>
+<h2 id="私有复制构造函数无实现仍然可以调用"><a href="#私有复制构造函数无实现仍然可以调用" class="headerlink" title="私有复制构造函数无实现仍然可以调用"></a>私有复制构造函数无实现仍然可以调用</h2><pre><code>/*
+*    Doc Name: Private copy constructor with none defination
+*    Prob Id: -
+*    Serial Id: A3
+*    Author: -
+*    Date: 10/10/28
+*/
+
+
+#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+using namespace std;
+
+class A
+&#123;
+public:
+    A()&#123;&#125;
+public:
+    void foo()&#123; A inst; A inst2(inst); return;&#125;
+private:
+    A(const A&amp; src);
+&#125;;
+
+int _tmain(int argc, _TCHAR* argv[])
+&#123;
+    A instA;
+//    A instA2(instA);
+    return 0;
+&#125;</code></pre>
+<h2 id="构造，复制构造，赋值函数例子"><a href="#构造，复制构造，赋值函数例子" class="headerlink" title="构造，复制构造，赋值函数例子"></a>构造，复制构造，赋值函数例子</h2><pre><code>/*
+*    Doc Name: Basic Concepts: constructor, copy constructor,
+*                assignment operation
+*    Prob Id: -
+*    Serial Id: A.2.2
+*    Author: -
+*    Env: Microsoft Visual Studio 2008 Win32 Console
+*    Date: 10/10/27
+*/
+
+#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+using namespace std;
+
+class A
+&#123;
+public:
+    A()&#123;cout&lt;&lt;&quot;ctor&quot;&lt;&lt;endl;&#125;
+    A(int i)&#123;cout&lt;&lt;&quot;ctor int&quot;&lt;&lt;endl;&#125;
+    A(const A&amp; src)&#123;cout&lt;&lt;&quot;copy ctor&quot;&lt;&lt;endl;&#125;
+    A&amp; operator=(const A&amp; rhs)&#123;cout&lt;&lt;&quot;assgin op&quot;&lt;&lt;endl; return (*this);&#125;
+&#125;;
+
+void println(const int n)
+&#123;
+    cout&lt;&lt;&quot;------- case &quot;&lt;&lt;n&lt;&lt;&quot;-------&quot;&lt;&lt;endl;
+&#125;
+
+A&amp; getInstRef()
+&#123;
+    A* p = new A();
+    return *p;
+&#125;
+
+A getInst()
+&#123;
+    A* p = new A();
+    return *p;
+&#125;
+
+int _tmain(int argc, _TCHAR* argv[])
+&#123;
+    println(1);
+    A instA; //ctor in stack
+    println(2);
+    A* pint;  //nothing done
+    println(3);
+    pint = new A(); //ctor heap
+
+    println(4);
+    A instAA(instA); //copy ctor
+    println(5);
+    A instAAA = instA; //copy ctor
+
+    println(6);
+    instAA = instAAA; //assign op
+
+    println(7);
+    A instAAAA = getInstRef(); //temp instance - return refrence to construct
+    println(8);
+    instAAAA = getInstRef(); //temp instance - return refrence to copy construct
+
+    println(9);
+    A instA5 = getInst(); //temp instance - return instance to construct
+    println(10);
+    instA5 = getInst(); //temp instance - return instance to copy construct
+
+    println(11);
+    A instA6 = 3;
+    println(12);
+    A instA7;
+    instA7 = 4;
+
+    return 0;
+&#125;</code></pre>
+<h2 id="类仅有复制构造函数时，将覆盖默认构造函数和复制构造函数"><a href="#类仅有复制构造函数时，将覆盖默认构造函数和复制构造函数" class="headerlink" title="类仅有复制构造函数时，将覆盖默认构造函数和复制构造函数"></a>类仅有复制构造函数时，将覆盖默认构造函数和复制构造函数</h2><pre><code>/*
+*    Doc Name: Basic Concepts: constructor, copy constructor,
+               assignment operation
+*    Prob Id: -
+*    Serial Id: A.2.1
+*    Author: -
+*    Env: DevCpp mingw
+*    Date: 10/10/27
+*/
+
+#include &lt;iostream&gt;
+#include &lt;exception&gt;
+using namespace std;
+
+class A
+&#123;
+public:
+       A(const A&amp; src)&#123;&#125;
+&#125;;
+
+int main()
+&#123;
+    A instA;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="c-异常：多个-catch-只走一个分支"><a href="#c-异常：多个-catch-只走一个分支" class="headerlink" title="c++异常：多个 catch 只走一个分支"></a><code>c++异常</code>：多个 catch 只走一个分支</h2><pre><code>/*
+*    Doc Name: Multiple Catch / Function throw
+*    Prob Id: -
+*    Serial Id: A.1
+*    Author: -
+*     Env: VS2008 Win32 Console
+*    Date: 10/10/27
+*/
+#include &quot;stdafx.h&quot;
+#include &lt;iostream&gt;
+using namespace std;
+
+void foo() throw ()
+&#123;
+    throw 5;
+&#125;
+
+int _tmain(int argc, _TCHAR* argv[])
+&#123;
+
+    try&#123;
+        foo();
+    &#125;
+    catch(float e)&#123;
+        cout&lt;&lt;&quot;caught global 1&quot;&lt;&lt;endl;
+    &#125;
+    catch(int e)&#123;
+        cout&lt;&lt;&quot;caught errno:&quot;&lt;&lt;e&lt;&lt;endl;
+    &#125;
+    catch()
+    &#123;
+        //exception should not caught here
+        cout&lt;&lt;&quot;caught global 2&quot;&lt;&lt;endl;
+    &#125;
+
+    return 0;
+&#125;</code></pre>
+<h2 id="虚函数，覆盖的笔试题一则"><a href="#虚函数，覆盖的笔试题一则" class="headerlink" title="虚函数，覆盖的笔试题一则"></a>虚函数，覆盖的笔试题一则</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class base
+&#123;
+    public:
+        base():m(3)&#123;&#125;
+        int m;
+    public:
+        int GetValue()&#123;return --m;&#125;
+&#125;;
+
+class derived1 :public base
+&#123;
+    public:
+        virtual int GetValue()&#123;return ++m;&#125;
+&#125;;
+
+class derived2 :public derived1
+&#123;
+    public:
+        int GetValue()&#123;return m*=2;&#125;
+&#125;;
+
+int main()
+&#123;
+    derived2 *pd2 = new derived2();
+    derived2 &amp;rd2 = *pd2;
+    pd2-&gt;GetValue();
+
+    derived1 *pd = pd2;
+    derived1 &amp;rd = *pd;
+    pd-&gt;GetValue();
+
+    base *pb = pd;
+    base &amp;rb = *pb;
+    pb-&gt;GetValue();
+
+    printf(&quot;%d\n&quot;, rb.GetValue());
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="父类对象引用子类对象实现的多态"><a href="#父类对象引用子类对象实现的多态" class="headerlink" title="父类对象引用子类对象实现的多态"></a>父类对象引用子类对象实现的多态</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class base
+&#123;
+    public:
+        virtual void foo()&#123;cout&lt;&lt;&quot;base foo&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+class derived :public base
+&#123;
+    public:
+        virtual void foo()&#123;cout&lt;&lt;&quot;derived foo&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+int main()
+&#123;
+    base *pb = new derived();
+    base &amp;rb = *pb;
+    rb.foo();
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="虚析构函数必要性"><a href="#虚析构函数必要性" class="headerlink" title="虚析构函数必要性"></a>虚析构函数必要性</h2><p>未声明 virtual：<br>#include <iostream><br>#include <cstdlib><br>using namespace std;</p>
+<pre><code>class base
+&#123;
+    public:
+        ~base()&#123;cout&lt;&lt;&quot;base destr&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+class derived :public base
+&#123;
+    public:
+        ~derived()&#123;cout&lt;&lt;&quot;derived destr&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+int main()
+&#123;
+    base *pb = new derived();
+    delete pb;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>声明 virtual：<br>#include <iostream><br>#include <cstdlib><br>using namespace std;</p>
+<pre><code>class base
+&#123;
+    public:
+        virtual ~base()&#123;cout&lt;&lt;&quot;base destr&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+class derived :public base
+&#123;
+    public:
+        virtual ~derived()&#123;cout&lt;&lt;&quot;derived destr&quot;&lt;&lt;endl;&#125;
+
+        //~derived()&#123;cout&lt;&lt;&quot;derived destr&quot;&lt;&lt;endl;&#125; //不加virtual也可以，默认会继承
+&#125;;
+
+int main()
+&#123;
+    base *pb = new derived();
+    delete pb;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="顺序对-return-同样适用"><a href="#顺序对-return-同样适用" class="headerlink" title="++,--顺序对 return 同样适用"></a><code>++,--</code>顺序对 return 同样适用</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+int foo(int i)
+&#123;
+    return i--;
+&#125;
+
+int main()
+&#123;
+    cout&lt;&lt;foo(1)&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>output：<br>1</p>
+<h2 id="正负对模运算的影响"><a href="#正负对模运算的影响" class="headerlink" title="正负对模运算的影响"></a>正负对模运算的影响</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+int main()
+&#123;
+    cout&lt;&lt;&quot;mod 3&quot;&lt;&lt;endl;
+    for(int i=-10; i&lt;10; i++)
+        cout&lt;&lt;i&lt;&lt;&#39; &#39;&lt;&lt;i%3&lt;&lt;endl;
+
+    cout&lt;&lt;&quot;mod -3&quot;&lt;&lt;endl;
+    for(int i=-10; i&lt;10; i++)
+        cout&lt;&lt;i&lt;&lt;&#39; &#39;&lt;&lt;i%(-3)&lt;&lt;endl;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>结果<br>mod 3<br>-10 -1<br>-9 0<br>-8 -2<br>-7 -1<br>-6 0<br>-5 -2<br>-4 -1<br>-3 0<br>-2 -2<br>-1 -1<br>0 0<br>1 1<br>2 2<br>3 0<br>4 1<br>5 2<br>6 0<br>7 1<br>8 2<br>9 0<br>mod -3<br>-10 -1<br>-9 0<br>-8 -2<br>-7 -1<br>-6 0<br>-5 -2<br>-4 -1<br>-3 0<br>-2 -2<br>-1 -1<br>0 0<br>1 1<br>2 2<br>3 0<br>4 1<br>5 2<br>6 0<br>7 1<br>8 2<br>9 0</p>
+<h2 id="运算符重载回忆代码"><a href="#运算符重载回忆代码" class="headerlink" title="运算符重载回忆代码"></a>运算符重载回忆代码</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class Foo
+&#123;
+    public:
+        Foo(int ii=0):i(ii)&#123;&#125;
+        Foo operator +(Foo&amp; rhs)
+        &#123;
+            return Foo(i+rhs.i);
+        &#125;
+        operator int*()&#123; int* p = new int(i); return p;&#125;
+
+    void print()&#123;cout&lt;&lt;i&lt;&lt;endl;&#125;
+    private:
+        int i;
+&#125;;
+
+int main()
+&#123;
+    Foo f(1);
+    Foo ff(2);
+    Foo re;
+    re = f + ff;
+    f.print();
+    re.print();
+    int* p= (int*)f;
+    cout&lt;&lt;*p&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="new-malloc-区别"><a href="#new-malloc-区别" class="headerlink" title="new malloc 区别"></a>new malloc 区别</h2><ol>
+<li><p>new 不但分配对象空间, 还会在分配后调用对象的构造器, 而 malloc 只是分配, 不构造:</p>
+<p> class A {<br> public:<br> A(): m_value(0)<br> {<br> }</p>
+<p> public:<br> int m_value;<br> };</p>
+<p> struct B {<br> A a;<br> };</p>
+<p> B *pb1 = new B;<br> B <em>pb2 = (B \</em>)malloc(sizeof(B));</p>
+</li>
+</ol>
+<p>pb1 因为被 new 调用了构造函数, 所以 <code>pb1-&gt;m_value == 0</code>,<br>pb2 的构造函数没有被调用, 所以 pb2-&gt;m_value 的值不确定(即未初始化).</p>
+<ol start="2">
+<li>new 分配时要指定类型, 是类型安全的; 而 malloc 返回的是 <code>void *</code>, 类型不安全; 类型不安全的东西在 <code>C++</code> 里是不被提倡的!</li>
+</ol>
+<h2 id="对数组资源的申请和释放"><a href="#对数组资源的申请和释放" class="headerlink" title="对数组资源的申请和释放"></a>对数组资源的申请和释放</h2><pre><code>int *pi = new int;
+delete pi;
+char *pchar = new char;
+delete pchar;
+int *piArray = new int[10];
+delete[] piArray;
+char* pCharArray = new char[10];
+delete[] pCharArray;</code></pre>
+<h2 id="自定义析构函数和-delete-amp-object-不能共存"><a href="#自定义析构函数和-delete-amp-object-不能共存" class="headerlink" title="自定义析构函数和 delete &amp;object 不能共存"></a>自定义析构函数和 delete &amp;object 不能共存</h2><pre><code>/*
+  Name: double delete
+  Copyright:
+  Author: elprup
+  Date: 08/10/10 09:18
+  Description:
+*/
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class bar
+&#123;
+public:
+    bar():i(0)&#123;&#125;
+    ~bar()&#123;cout&lt;&lt;&quot;destrucotr&quot;&lt;&lt;endl;&#125;
+    int i;
+&#125;;
+
+
+int main()
+&#123;
+    bar b;
+    delete &amp;b;
+
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="copy-构造函数可以访问同类型参数的私有成员，却不能访问非同类的参数的私有成员"><a href="#copy-构造函数可以访问同类型参数的私有成员，却不能访问非同类的参数的私有成员" class="headerlink" title="copy 构造函数可以访问同类型参数的私有成员，却不能访问非同类的参数的私有成员"></a>copy 构造函数可以访问同类型参数的私有成员，却不能访问非同类的参数的私有成员</h2><pre><code>/*
+  Name: copy consturctor can visit private varity of its parameter
+  Copyright:
+  Author: elprup
+  Date: 08/10/10 09:18
+  Description:
+*/
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class bar
+&#123;
+    private:
+        int m_bi;
+&#125;;
+
+
+class foo
+&#123;
+public:
+    foo(int i=0):m_i(i)&#123;&#125;
+    foo(foo&amp; f)&#123;m_i = f.m_i;&#125; //visit param f.m_i;
+    foo(bar&amp; b)&#123;m_i = b.m_bi;&#125; //visit param b.m_bi;
+    void p()&#123;cout&lt;&lt;m_i&lt;&lt;endl;&#125;
+private:
+    int m_i;
+&#125;;
+
+
+
+int main()
+&#123;
+    foo f(3);
+    foo f2(f);
+//    f2.m_i; //wrong, can&#39;t access
+    f2.p();  //right, get value;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="隐式的-copy-构造函数"><a href="#隐式的-copy-构造函数" class="headerlink" title="隐式的 copy 构造函数"></a>隐式的 copy 构造函数</h2><pre><code>/*
+  Name: temporary varity copy consturctor
+  Copyright:
+  Author: elprup
+  Date: 08/10/10 09:18
+  Description:
+*/
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class bar;
+
+class foo
+&#123;
+public:
+    foo():pb(0)&#123;&#125;
+    // do this if not define operator bar &amp;
+    foo(bar&amp; b)&#123;cout&lt;&lt;&quot;copy constructor&quot;&lt;&lt;endl;&#125;
+    foo&amp; operator=(const foo&amp; f)&#123;cout&lt;&lt;&quot;operator equal&quot;&lt;&lt;endl; return *this;&#125;
+    // if define function below, skip copy constructor and oprator= foo
+    foo&amp; operator=(const bar&amp; b)&#123;cout&lt;&lt;&quot;bar operator equal&quot;&lt;&lt;endl; return *this;&#125;
+private:
+    bar *pb;
+&#125;;
+
+class bar
+&#123;
+&#125;;
+
+int main()
+&#123;
+    foo f;
+    f = b;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="c-沉思录-代码集-2"><a href="#c-沉思录-代码集-2" class="headerlink" title="c++沉思录 代码集 2"></a><code>c++沉思录</code> 代码集 2</h2><pre><code>/*
+  Name: Why C++ ?(2)(plus on/off funtion)
+  Copyright:
+  Author: elprup
+  Date: 08/10/10 09:18
+  Description:
+*/
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+//on/off for c on/off function
+bool on = true;
+
+int print(const char* s)
+&#123;
+    extern bool on;
+    if(on)
+        printf(&quot;%s\n&quot;, s);
+    return 0;
+&#125;
+
+void badguy()
+&#123;
+    extern bool on;
+    on = false; //modify global varity
+    return;
+&#125;
+
+class trace_cpp
+&#123;
+public:
+    //easy to initial state of class, but c need special attention.
+    trace_cpp():m_on(true)&#123;&#125;
+    int print(const char*s)const&#123;if(m_on) printf(&quot;%s\n&quot;, s); return 0;&#125;
+    int on()&#123;m_on = true; return 0;&#125;
+    int off()&#123;m_on = false; return 0;&#125;
+private:
+    //add class related varity, not see out of class
+    bool m_on;
+&#125;;
+
+int main()
+&#123;
+    //c style trace
+    print(&quot;Hello from c.&quot;);
+
+    //cpp style trace;
+    trace_cpp tc;
+    tc.print(&quot;Hello from c++&quot;);
+
+    //turn on/off c style trace
+    extern bool on;
+    on = false;
+    print(&quot;Wont display from c.&quot;);
+    on = true;
+    print(&quot;Will display from c.&quot;);
+    //it looks working fine, but if foo() modify it?
+    badguy();
+    print(&quot;Want to display, but won&#39;t from c.&quot;);
+
+    //turn on/off cpp style
+    tc.off();
+    tc.print(&quot;Wont display from cpp.&quot;);
+    tc.on();
+    tc.print(&quot;Will display from cpp.&quot;);
+    //so we hardly find a function to modify state of trace cpp
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="c-沉思录-代码集-1"><a href="#c-沉思录-代码集-1" class="headerlink" title="c++沉思录 代码集 1"></a><code>c++沉思录</code> 代码集 1</h2><pre><code>/*
+  Name: Why C++ ?(basic funtion)
+  Copyright:
+  Author: elprup
+  Date: 08/10/10 09:18
+  Description:
+*/
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+
+#include &lt;iostream&gt;
+using namespace std;
+
+int print(const char* s)
+&#123;
+    printf(&quot;%s\n&quot;, s);
+    return 0;
+&#125;
+
+class trace_cpp
+&#123;
+public:
+    int print(const char*s)&#123;printf(&quot;%s\n&quot;, s); return 0;&#125;
+&#125;;
+
+int main()
+&#123;
+    //c style trace
+    print(&quot;Hello from c.&quot;);
+
+    //cpp style trace;
+    trace_cpp tc;
+    tc.print(&quot;Hello from c++&quot;);
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="函数指针的取地址和解引用"><a href="#函数指针的取地址和解引用" class="headerlink" title="函数指针的取地址和解引用"></a>函数指针的取地址和解引用</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+#include &lt;stdlib.h&gt;
+using namespace std;
+
+int pdc(int n)&#123;return 1;&#125;
+typedef int (*fp)(int n);
+
+int main()
+&#123;
+    fp f1 = &amp;pdc;
+    fp* f2 = &amp;f1;
+    (*f2)(2);
+    (**f2)(2);
+    (***f2)(2);
+    (**********************************************f2)(2);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="模板模板参数"><a href="#模板模板参数" class="headerlink" title="模板模板参数"></a>模板模板参数</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+template &lt;typename T, template&lt;typename E&gt; class Container&gt;
+struct Foo
+&#123;
+    public:
+        T data;
+        Container&lt;T&gt; cont;
+&#125;;
+
+int main()
+&#123;
+    Foo&lt;int,vector&gt; f;
+    f.data = 9;
+    f.cont.push_back(9);
+    return 0;
+&#125;</code></pre>
+<h2 id="声明模板友元函数"><a href="#声明模板友元函数" class="headerlink" title="声明模板友元函数"></a>声明模板友元函数</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;stdlib.h&gt;
+using namespace std;
+
+template&lt;typename T&gt; class person;
+
+template&lt;typename T&gt;
+ostream&amp; operator&lt;&lt;(ostream &amp; ostr, person&lt;T&gt;&amp; p);
+
+template&lt;typename T&gt;
+class person
+&#123;
+public:
+    person(T _data):data(_data)&#123;cout&lt;&lt;&quot;person constructor&quot;&lt;&lt;endl;&#125;
+    person(person&lt;T&gt;&amp; rhs)&#123;cout&lt;&lt;&quot;person copy constructor&quot;&lt;&lt;endl;&#125;
+    person&lt;T&gt;&amp; operator=(person&lt;T&gt;&amp; rhs)&#123; cout&lt;&lt;&quot;person operator =&quot;&lt;&lt;endl; return *this;&#125;
+    ~person()&#123;cout&lt;&lt;&quot;person destructor&quot;&lt;&lt;endl;&#125;
+
+    friend ostream&amp; operator&lt;&lt; &lt;T&gt;(ostream&amp; ostr, person&lt;T&gt;&amp; p);
+
+private:
+    T data;
+&#125;;
+
+template&lt;typename T&gt;
+ostream&amp; operator&lt;&lt;(ostream&amp; ostr, person&lt;T&gt;&amp; p)&#123;
+    ostr &lt;&lt; p.data &lt;&lt; endl;
+    return ostr;
+&#125;
+
+int main()
+&#123;
+    person&lt;int&gt; man(1);
+    cout&lt;&lt;man&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="函数指针和重写的for-each模板函数"><a href="#函数指针和重写的for-each模板函数" class="headerlink" title="函数指针和重写的for_each模板函数"></a>函数指针和重写的<code>for_each</code>模板函数</h2><pre><code>#include &lt;algorithm&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;functional&gt;
+using namespace std;
+
+template&lt;typename T, typename _func&gt;
+_func formyeach(T b, T e, _func func)&#123;
+    for(;b!=e;++b)
+    &#123;
+        func(*b);
+    &#125;
+    return func;
+&#125;
+
+
+void print(int elem)&#123;
+    cout&lt;&lt;elem&lt;&lt;endl;
+&#125;
+
+typedef void(* second_print)(int);
+
+int main()
+&#123;
+
+    vector&lt;int&gt; v(30,9);
+    for_each(v.begin(),v.end(),&amp;print);
+    cout&lt;&lt;&quot;------------------------------&quot;&lt;&lt;endl;
+    formyeach(v.begin(),v.end(),&amp;print);
+    second_print fun= &amp;print;
+    fun(3);
+    return 0;
+&#125;</code></pre>
+<h2 id="函数对象和模板结合一例"><a href="#函数对象和模板结合一例" class="headerlink" title="函数对象和模板结合一例"></a>函数对象和模板结合一例</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+using namespace std;
+
+template&lt;typename T&gt;
+class fun&#123;
+      public:
+      void operator() (T param)&#123;cout&lt;&lt;param&lt;&lt;endl;&#125;
+&#125;;
+
+template&lt;typename T, typename _FUNC&gt;
+void do_if(vector&lt;T&gt; v,  _FUNC f)
+&#123;
+     (*f)(v[0]);
+     return;
+&#125;
+
+int main()
+&#123;
+    vector&lt;int&gt; v(10,2);
+    do_if&lt;int, fun&lt;int&gt;*&gt;(v, &amp;fun&lt;int&gt;());
+    system(&quot;PAUSE&quot;);
+    vector&lt;string&gt; v2(10,&quot;A&quot;);
+    do_if&lt;string, fun&lt;string&gt;*&gt;(v2, &amp;fun&lt;string&gt;());
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="const-reference-被引用对象可修改的例子"><a href="#const-reference-被引用对象可修改的例子" class="headerlink" title="const reference 被引用对象可修改的例子"></a>const reference 被引用对象可修改的例子</h2><pre><code>#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+int main()&#123;
+    int a = 9;
+    const int &amp;refa = a;
+    refa = 0; //Error:assignment of read-only reference &#39;refa&#39;
+    a = 0;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="模板类特殊化"><a href="#模板类特殊化" class="headerlink" title="模板类特殊化"></a>模板类特殊化</h2><pre><code>#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+template&lt;typename T&gt;
+class Example&#123;
+    public:
+        T data;
+    public:
+        Example(T _data):data(_data)&#123;cout&lt;&lt;&quot;Initial data=&quot;&lt;&lt;data&lt;&lt;endl;&#125;
+        void print()&#123;cout&lt;&lt;&quot;print data:&quot;&lt;&lt;data&lt;&lt;endl;&#125;
+&#125;;
+
+template&lt;&gt;
+class Example&lt;double&gt;&#123;
+    public:
+        double data;
+    public:
+        Example(double _data):data(_data)&#123;cout&lt;&lt;&quot;Special Initial data=&quot;&lt;&lt;data&lt;&lt;endl;&#125;
+        void print()&#123;cout&lt;&lt;&quot;Special print data:&quot;&lt;&lt;data&lt;&lt;endl;&#125;
+&#125;;
+
+int main()&#123;
+    Example&lt;int&gt; e_int(5);
+    e_int.print();
+
+    Example&lt;double&gt; e_double(1.2);
+    e_double.print();
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="运算符-的结合律是从左往右还是从右往左"><a href="#运算符-的结合律是从左往右还是从右往左" class="headerlink" title="运算符||的结合律是从左往右还是从右往左"></a>运算符<code>||</code>的结合律是从左往右还是从右往左</h2><p>今见一网页声称<code>||</code>结合为从右往左，甚感奇怪，故用一程序探之。<br>int main()<br>{<br>int *p;<br>p = 0;<br>int i;<br>if((i=*p)||1)<br>;<br>return 0;<br>}<br>若<code>||</code>为真，则<code>i=*p;</code>不会执行。否则，出现非法访问错误。</p>
+<p>结果：<code>||</code>结合律为从左往右。</p>
+<h2 id="c-不能用对象实例实现多态-基类和继承类实例转换时出现的成员丢失（cut）"><a href="#c-不能用对象实例实现多态-基类和继承类实例转换时出现的成员丢失（cut）" class="headerlink" title="c++不能用对象实例实现多态/ 基类和继承类实例转换时出现的成员丢失（cut）"></a><code>c++</code>不能用对象实例实现多态/ 基类和继承类实例转换时出现的成员丢失（cut）</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    int i;
+    void showi()&#123;cout&lt;&lt;i&lt;&lt;endl;&#125;
+&#125;;
+
+class Derived : public Base
+&#123;
+public:
+    int j;
+    void showj()&#123;cout&lt;&lt;j&lt;&lt;endl;&#125;
+    Derived&amp; operator=(const Base&amp; other)&#123;i = other.i; return *this;&#125;
+&#125;;
+
+int main()
+&#123;
+    Base b;
+    b.i = 0;
+    Derived d,d2;
+    d.i = 1;
+    d.j = 2;
+    b = d;
+    b.showi();
+    system(&quot;PAUSE&quot;);
+    d2 = b;
+    d2.showi();
+    d2.showj();
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="枚举类型和整形的转换和比较"><a href="#枚举类型和整形的转换和比较" class="headerlink" title="枚举类型和整形的转换和比较"></a>枚举类型和整形的转换和比较</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+typedef enum _t&#123;A,B,C&#125;T;
+
+int main()
+&#123;
+    int i;
+    T j,k;
+    i = 0;
+    k= B;
+    j = (T)1;
+    cout&lt;&lt;j&lt;&lt;endl;
+    cout&lt;&lt;(j==k)&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="gt-的优先级比-高"><a href="#gt-的优先级比-高" class="headerlink" title="-&gt;的优先级比*高"></a><code>-&gt;</code>的优先级比<code>*</code>高</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+typedef struct _node&#123;
+    int a;
+    int *p;
+&#125;node;
+
+int main()
+&#123;
+    node n;
+    node *p = &amp;n;
+    node **pp = &amp;p;
+
+    int b = 2;
+    n.a = 1;
+    n.p = &amp;b;
+    cout &lt;&lt; (*pp)-&gt;a &lt;&lt; endl;
+    // cout &lt;&lt; *pp-&gt;a &lt;&lt;endl; //error node* has no member a
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="指针的引用如何声明"><a href="#指针的引用如何声明" class="headerlink" title="指针的引用如何声明"></a>指针的引用如何声明</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+//void foo(int* &amp;p)&#123;&#125; //Error
+void foo(int&amp; *p)&#123;&#125; //Ok
+
+int
+main()
+&#123;
+    int *p;
+    foo(p);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="c-中隐藏规则-的避免"><a href="#c-中隐藏规则-的避免" class="headerlink" title="c++中隐藏规则 的避免"></a><code>c++</code>中隐藏规则 的避免</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    void foo(int i)&#123;&#125;
+&#125;;
+
+class Derived : public Base
+&#123;
+public:
+    void foo(string s)&#123;&#125;
+&#125;;
+
+int main()
+&#123;
+    Derived d;
+    d.Base::foo(1024);
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    void foo(int i)&#123;&#125;
+    void bar()&#123;&#125;
+&#125;;
+
+class Derived : public Base
+&#123;
+public:
+    void foo(string s)&#123;&#125;
+    int bar;
+&#125;;
+
+int main()
+&#123;
+    Derived d;
+    d.bar = 0;
+    d.Base::bar();
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;
+
+
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    void foo(int i)&#123;&#125;
+    int bar;
+&#125;;
+
+class Derived : public Base
+&#123;
+public:
+    void foo(string s)&#123;&#125;
+    void bar()&#123;&#125;
+&#125;;
+
+int main()
+&#123;
+    Derived d;
+    d.Base::bar = 0;
+    d.bar();
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;
+
+
+#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    void foo(int i)&#123;&#125;
+&#125;;
+
+class Derived : public Base
+&#123;
+public:
+    void foo(string s)&#123;&#125;
+    using Base::foo;
+&#125;;
+
+int main()
+&#123;
+    Derived d;
+    d.foo(&quot;&quot;);
+    d.foo(1024);
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="子类中定义基类的访问控制标签"><a href="#子类中定义基类的访问控制标签" class="headerlink" title="子类中定义基类的访问控制标签"></a>子类中定义基类的访问控制标签</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    int i;
+&#125;;
+
+class Derived : public Base
+&#123;
+//private:
+//    using Base::i;
+&#125;;
+
+
+int main()
+&#123;
+    Base baseObj;
+    baseObj.i = 0;
+
+    Derived derivedObj;
+    derivedObj.i = 0;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="子类避免覆盖，调用父类虚函数"><a href="#子类避免覆盖，调用父类虚函数" class="headerlink" title="子类避免覆盖，调用父类虚函数"></a>子类避免覆盖，调用父类虚函数</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Base
+&#123;
+public:
+    virtual int foo(int i)&#123;return i;&#125;
+&#125;;
+
+class Derived : public Base
+&#123;
+public:
+    virtual int foo(int i)&#123;return i+1;&#125;
+&#125;;
+
+int main()
+&#123;
+    Base *p = new Derived;
+    cout&lt;&lt;p-&gt;foo(1)&lt;&lt;endl;
+    cout&lt;&lt;p-&gt;Base::foo(1)&lt;&lt;endl;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="析构函数不会-delete-指针成员变量"><a href="#析构函数不会-delete-指针成员变量" class="headerlink" title="析构函数不会 delete 指针成员变量"></a>析构函数不会 delete 指针成员变量</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Kit
+&#123;
+public:
+    Kit(int ii):i(ii)&#123;&#125;
+    int i;
+&#125;;
+
+class Foo
+&#123;
+public:
+    Kit *p;
+&#125;;
+
+int main()
+&#123;
+    Foo *pf = new Foo;
+    pf-&gt;p = new Kit(10);
+    Kit *pk = pf-&gt;p;
+    delete pf;
+    cout&lt;&lt;pk-&gt;i&lt;&lt;endl; //Foo destructure dont delete data member pointer
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="copy-构造函数的参数可为-reference-或者-constant-reference"><a href="#copy-构造函数的参数可为-reference-或者-constant-reference" class="headerlink" title="copy 构造函数的参数可为 reference 或者 constant reference"></a>copy 构造函数的参数可为 reference 或者 constant reference</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo(int i)&#123;&#125;
+    Foo(Foo&amp; other)&#123;cout&lt;&lt;&#39;*&#39;&lt;&lt;endl;&#125;
+    Foo(const Foo&amp; other)&#123;cout&lt;&lt;&#39;&amp;&#39;&lt;&lt;endl;&#125;
+&#125;;
+
+int main()
+&#123;
+    Foo f(1);
+    Foo ff = f;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="数组进行传递时，sizeof-变化"><a href="#数组进行传递时，sizeof-变化" class="headerlink" title="数组进行传递时，sizeof 变化"></a>数组进行传递时，sizeof 变化</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+void foo(char s[])
+&#123;
+    cout&lt;&lt;sizeof(s)&lt;&lt;endl;
+&#125;
+
+int main()
+&#123;
+    char s[] = &quot;Hello&quot;;
+    cout&lt;&lt;sizeof(s)&lt;&lt;endl;
+    char *p = s;
+    cout&lt;&lt;sizeof(p)&lt;&lt;endl;
+    foo(s);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="类指针成员的一种管理方法：-值和指针的结合"><a href="#类指针成员的一种管理方法：-值和指针的结合" class="headerlink" title="类指针成员的一种管理方法： 值和指针的结合"></a>类指针成员的一种管理方法： 值和指针的结合</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+struct bottle
+&#123;
+    int refCount;
+    int weight;
+    int size;
+    bottle(int w,int sz):refCount(1),weight(w),size(sz)&#123;&#125;
+    bottle* getOwnCopy()
+    &#123;
+        if(refCount==1)
+            return this;
+        refCount--;
+        return new bottle(weight,size);
+    &#125;
+private:
+    bottle(const bottle&amp;);
+    bottle&amp; operator=(const bottle&amp;);
+&#125;;
+
+class ProductBottle
+&#123;
+public:
+    ProductBottle(int w=10,int sz=20):pinst(new bottle(w,sz))&#123;&#125;
+    ProductBottle(const ProductBottle&amp; other)
+    &#123;
+        other.pinst-&gt;refCount++;
+        pinst = other.pinst;
+    &#125;
+    ProductBottle&amp; operator=(const ProductBottle&amp; rhs)
+    &#123;
+        rhs.pinst-&gt;refCount++;
+        if(--pinst-&gt;refCount==0)
+            delete pinst;
+        pinst = rhs.pinst;
+        return *this;
+    &#125;
+    ~ProductBottle()
+    &#123;
+        if(--pinst-&gt;refCount==0)
+            delete pinst;
+    &#125;
+    int AddWater(int waterWeight)
+    &#123;
+        pinst = pinst-&gt;getOwnCopy();
+        pinst-&gt;weight += waterWeight;
+        return 0;
+    &#125;
+    int show()
+    &#123;
+        cout&lt;&lt;pinst-&gt;weight&lt;&lt;&#39; &#39;&lt;&lt;pinst-&gt;size&lt;&lt;&#39; &#39;&lt;&lt;pinst-&gt;refCount&lt;&lt;endl;
+    &#125;
+private:
+    bottle* pinst;
+&#125;;
+
+int main()
+&#123;
+    ProductBottle Cola;
+    ProductBottle Sprint(Cola);
+    ProductBottle Finda(Sprint);
+    /*****************************/
+    Cola.show();
+    Sprint.show();
+    Finda.show();
+    /*****************************/
+    Cola.AddWater(50);
+    /*****************************/
+    Cola.show();
+    Sprint.show();
+    Finda.show();
+    /*****************************/
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="引起内存泄露的一种原因-函数中-new-对象，没有被-delete"><a href="#引起内存泄露的一种原因-函数中-new-对象，没有被-delete" class="headerlink" title="引起内存泄露的一种原因 函数中 new 对象，没有被 delete"></a>引起内存泄露的一种原因 函数中 new 对象，没有被 delete</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo()&#123;cout&lt;&lt;&quot;constructed&quot;&lt;&lt;endl;&#125;
+    ~Foo()&#123;cout&lt;&lt;&quot;destructed&quot;&lt;&lt;endl;&#125;
+    int array[10000];
+&#125;;
+
+Foo* handleFoo(Foo* pf)
+&#123;
+    Foo* pf2 = new Foo();
+    return pf;
+&#125;
+
+int main()
+&#123;
+    Foo* pf;
+    while(true)
+    &#123;
+        pf = handleFoo(pf);
+    &#125;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>警告：本代码会引起最终内存耗尽。在 windows 下的同学可以看到进程管理器中一条优美的内存增长曲线。</p>
+<h2 id="函数调用封装成类–运算符-的重载"><a href="#函数调用封装成类–运算符-的重载" class="headerlink" title="函数调用封装成类–运算符()的重载"></a>函数调用封装成类–运算符()的重载</h2><p>原来的代码：<br>#include <cstdlib><br>#include <iostream><br>#include <vector><br>using namespace std;</p>
+<pre><code>class trival
+&#123;
+public:
+    void show()&#123;cout&lt;&lt;e1&lt;&lt;&#39; &#39;&lt;&lt;e2&lt;&lt;&#39; &#39;&lt;&lt;e3&lt;&lt;endl;&#125;
+private:
+    int e1,e2,e3;
+&#125;;
+
+void show(trival&amp; t)
+&#123;
+    t.show();
+&#125;
+
+int main()
+&#123;
+    vector&lt;trival&gt; tt(5);
+    for_each(tt.begin(),tt.end(),show);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>如果我需要累加三元组的第一号元素<br>#include <cstdlib><br>#include <iostream><br>#include <vector><br>using namespace std;</p>
+<pre><code>class trival
+&#123;
+public:
+    void show()&#123;cout&lt;&lt;e1&lt;&lt;&#39; &#39;&lt;&lt;e2&lt;&lt;&#39; &#39;&lt;&lt;e3&lt;&lt;endl;&#125;
+public:
+    int e1,e2,e3;
+&#125;;
+
+void show(trival&amp; t)
+&#123;
+    t.show();
+&#125;
+
+void inc(trival&amp; t)
+&#123;
+    t.e1++;
+&#125;
+
+int main()
+&#123;
+    vector&lt;trival&gt; tt(5);
+    for_each(tt.begin(),tt.end(),show);
+    for_each(tt.begin(),tt.end(),inc);
+    for_each(tt.begin(),tt.end(),show);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>问题出现了，如果我想自定义给三元组的每个元素加 n 呢？于是。。。<br>#include <cstdlib><br>#include <iostream><br>#include <vector><br>using namespace std;</p>
+<pre><code>class trival
+&#123;
+public:
+    void show()&#123;cout&lt;&lt;e1&lt;&lt;&#39; &#39;&lt;&lt;e2&lt;&lt;&#39; &#39;&lt;&lt;e3&lt;&lt;endl;&#125;
+public:
+    int e1,e2,e3;
+&#125;;
+
+void show(trival&amp; t)
+&#123;
+    t.show();
+&#125;
+
+class add
+&#123;
+public:
+    add(int ae1=0, int ae2=0, int ae3=0):adde1(ae1),adde2(ae2),adde3(ae3)&#123;&#125;
+    void operator()(trival&amp; t)&#123;t.e1+=adde1; t.e2+=adde2; t.e3+=adde3;&#125;
+private:
+    int adde1,adde2,adde3;
+&#125;;
+
+int main()
+&#123;
+    vector&lt;trival&gt; tt(5);
+    for_each(tt.begin(),tt.end(),show);
+    for_each(tt.begin(),tt.end(),add(1,2));
+    for_each(tt.begin(),tt.end(),show);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>是不是很有意思?</p>
+<h2 id="类有指针成员的处理（2）传值"><a href="#类有指针成员的处理（2）传值" class="headerlink" title="类有指针成员的处理（2）传值"></a>类有指针成员的处理（2）传值</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+
+class Foo1
+&#123;
+public:
+    Foo1(int* pp, int vv):p(new int(*pp)),val(vv)&#123;cout&lt;&lt;&quot;Foo construction\n&quot;;&#125;
+
+    Foo1(const Foo1&amp; other)&#123;cout&lt;&lt;&quot;Foo1 copy\n&quot;; p = new int(*other.p); val=other.val;&#125;
+    Foo1&amp; operator=(Foo1&amp; rhs)&#123;cout&lt;&lt;&quot;Foo1 assign\n&quot;; delete p; p = new int(*rhs.p); val=rhs.val; return *this;&#125;
+    ~Foo1()&#123;cout&lt;&lt;&quot;Foo1 destruction\n&quot;; delete p;&#125;
+
+    void show()&#123;cout&lt;&lt;*p&lt;&lt;&#39; &#39;&lt;&lt;val&lt;&lt;endl;&#125;
+public:
+    int *p;
+    int val;
+&#125;;
+
+
+
+int main()
+&#123;
+    int a=9,b=10;
+    int* p=&amp;a;
+    int* pp=&amp;b;
+    Foo1 f(p,a);
+    Foo1 f2(f);
+    Foo1 f3(pp,b);
+    f3 = f2;
+    f.show();f2.show();f3.show();
+    (*f.p)++;
+    f.show();f2.show();f3.show();
+    return 0;
+&#125;</code></pre>
+<h2 id="copy-和-copy-assignment-的区别"><a href="#copy-和-copy-assignment-的区别" class="headerlink" title="copy 和 copy assignment 的区别"></a>copy 和 copy assignment 的区别</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class foo
+&#123;
+public:
+    foo()&#123;&#125;
+    foo(const foo&amp; other)&#123;cout&lt;&lt;&quot;copy\n&quot;;&#125;
+    foo&amp; operator=(foo&amp; rhs)&#123;cout&lt;&lt;&quot;assign\n&quot;; return *this;&#125;
+&#125;;
+
+int main()
+&#123;
+    foo f;
+    foo f2 = f;
+    foo f3;
+    f3 = f;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="类有指针成员时的处理（1）拷贝时复制指针"><a href="#类有指针成员时的处理（1）拷贝时复制指针" class="headerlink" title="类有指针成员时的处理（1）拷贝时复制指针"></a>类有指针成员时的处理（1）拷贝时复制指针</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class u_ptr
+&#123;
+    friend class Foo1;
+private:
+    u_ptr(int* pp):p(pp),usecount(1)&#123;cout&lt;&lt;&quot;u_ptr construction\n&quot;;&#125;
+private:
+    int usecount;
+    int *p;
+&#125;;
+
+class Foo1
+&#123;
+public:
+    Foo1(int* pp, int vv):p(new u_ptr(pp)),val(vv)&#123;cout&lt;&lt;&quot;Foo construction\n&quot;;&#125;
+
+    Foo1(const Foo1&amp; other)&#123; p = other.p; val=other.val; p-&gt;usecount++;cout&lt;&lt;&quot;Foo1 copy&quot;&lt;&lt;p-&gt;usecount&lt;&lt;&quot;\n&quot;;&#125;
+    Foo1&amp; operator=(Foo1&amp; rhs)&#123; rhs.p-&gt;usecount++; if(--(p-&gt;usecount)==0)&#123;cout&lt;&lt;&quot;delete p&quot;&lt;&lt;endl; delete p;&#125; p = rhs.p; val=rhs.val;cout&lt;&lt;&quot;Foo1 assign&quot;&lt;&lt;p-&gt;usecount&lt;&lt;&quot;\n&quot;; return *this;&#125;
+    ~Foo1()&#123; if(--(p-&gt;usecount)==0) delete p;cout&lt;&lt;&quot;Foo1 destruction&quot;&lt;&lt;p-&gt;usecount&lt;&lt;&quot;\n&quot;;&#125;
+
+private:
+    u_ptr *p;
+    int val;
+&#125;;
+
+
+
+int main()
+&#123;
+    int a=9,b=10;
+    int* p=&amp;a;
+    int* pp=&amp;b;
+    Foo1 f(p,a);
+    Foo1 f2(f);
+    Foo1 f3(pp,b);
+    f3=f2;
+    return 0;
+&#125;</code></pre>
+<p>为了看清楚指针指向，改为 public<br>#include <cstdlib><br>#include <iostream><br>using namespace std;</p>
+<pre><code>class u_ptr
+&#123;
+    friend class Foo1;
+private:
+    u_ptr(int* pp):p(pp),usecount(1)&#123;cout&lt;&lt;&quot;u_ptr construction\n&quot;;&#125;
+public:
+    int usecount;
+    int *p;
+&#125;;
+
+class Foo1
+&#123;
+public:
+    Foo1(int* pp, int vv):p(new u_ptr(pp)),val(vv)&#123;cout&lt;&lt;&quot;Foo construction\n&quot;;&#125;
+
+    Foo1(const Foo1&amp; other)&#123; p = other.p; val=other.val; p-&gt;usecount++;cout&lt;&lt;&quot;Foo1 copy&quot;&lt;&lt;p-&gt;usecount&lt;&lt;&quot;\n&quot;;&#125;
+    Foo1&amp; operator=(Foo1&amp; rhs)&#123; rhs.p-&gt;usecount++; if(--(p-&gt;usecount)==0)&#123;cout&lt;&lt;&quot;delete p&quot;&lt;&lt;endl; delete p;&#125; p = rhs.p; val=rhs.val;cout&lt;&lt;&quot;Foo1 assign&quot;&lt;&lt;p-&gt;usecount&lt;&lt;&quot;\n&quot;; return *this;&#125;
+    ~Foo1()&#123; if(--(p-&gt;usecount)==0) delete p;cout&lt;&lt;&quot;Foo1 destruction&quot;&lt;&lt;p-&gt;usecount&lt;&lt;&quot;\n&quot;;&#125;
+
+    void show()&#123;cout&lt;&lt;*(p-&gt;p)&lt;&lt;&#39; &#39;&lt;&lt;val&lt;&lt;endl;&#125;
+public:
+    u_ptr *p;
+    int val;
+&#125;;
+
+
+
+int main()
+&#123;
+    int a=9,b=10;
+    int* p=&amp;a;
+    int* pp=&amp;b;
+    Foo1 f(p,a);
+    Foo1 f2(f);
+    Foo1 f3(pp,b);
+    f3 = f2;
+    f.show();f2.show();f3.show();
+    (*f.p-&gt;p)++;
+    f.show();f2.show();f3.show();
+    return 0;
+&#125;</code></pre>
+<h2 id="友元函数访问私有成员变量"><a href="#友元函数访问私有成员变量" class="headerlink" title="友元函数访问私有成员变量"></a>友元函数访问私有成员变量</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo():s(&quot;&quot;)&#123;&#125;
+    void show()&#123;cout&lt;&lt;s&lt;&lt;endl;&#125;
+    friend istream&amp; operator&gt;&gt;(istream&amp;,Foo&amp;);
+private:
+    string s;
+&#125;;
+
+istream&amp; operator&gt;&gt;(istream&amp; is,Foo&amp; f)
+&#123;
+    is&gt;&gt;f.s;
+    return is;
+&#125;
+
+int main()
+&#123;
+    Foo f;
+    cin&gt;&gt;f;
+    f.show();
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="函数参数的自动隐式类型转换只能一次"><a href="#函数参数的自动隐式类型转换只能一次" class="headerlink" title="函数参数的自动隐式类型转换只能一次"></a>函数参数的自动隐式类型转换只能一次</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class X
+&#123;
+public:
+    X(int xx):x(xx)&#123;&#125;
+    int x;
+&#125;;
+
+class Y
+&#123;
+public:
+    Y(X xx):y(xx.x)&#123;&#125;
+    int y;
+&#125;;
+
+void f(Y)&#123;&#125;
+
+int main()
+&#123;
+//======case 1======
+    X x(2);
+    f(x); //ok
+    f(X(2));//ok
+//======case 2======
+    f(2);  //error:conversion from int&#39; to non-scalar type Y&#39; requested
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="默认构造函数时可以使用的初始化类成员的类实例定义方式"><a href="#默认构造函数时可以使用的初始化类成员的类实例定义方式" class="headerlink" title="默认构造函数时可以使用的初始化类成员的类实例定义方式"></a>默认构造函数时可以使用的初始化类成员的类实例定义方式</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+//    Foo(int aa=0,int bb=0,int cc=0):a(aa),b(bb),c(cc)&#123;&#125;
+    int a,b,c;
+&#125;;
+
+int main()
+&#123;
+    Foo a=&#123;1,2,3&#125;;//只在无构造函数时可用
+    return 0;
+&#125;</code></pre>
+<h2 id="函数内定义类实例，返回实例是否析构的问题"><a href="#函数内定义类实例，返回实例是否析构的问题" class="headerlink" title="函数内定义类实例，返回实例是否析构的问题"></a>函数内定义类实例，返回实例是否析构的问题</h2><p>运行的结果会很有趣的。<br>#include <cstdlib><br>#include <iostream><br>using namespace std;</p>
+<pre><code>class Foo
+&#123;
+public:
+    Foo()&#123;cout&lt;&lt;&quot;construct&quot;&lt;&lt;endl;&#125;
+    ~Foo()&#123;cout&lt;&lt;&quot;destruct&quot;&lt;&lt;endl;&#125;
+    Foo(const Foo&amp; other)&#123;cout&lt;&lt;&quot;copy&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+int func1()
+&#123;
+    Foo f;
+    return 0;
+&#125;
+
+Foo func2()
+&#123;
+    Foo f;
+    return f;
+&#125;
+
+Foo&amp; func3()
+&#123;
+    Foo f;
+    return f;
+&#125;
+
+int main()
+&#123;
+    func1(); //构建，析构
+    cout&lt;&lt;endl;
+    int i = func1(); //编译器相关
+    cout&lt;&lt;endl;
+    func2(); //构建，析构
+    cout&lt;&lt;endl;
+    Foo f2 = func2(); //编译器相关
+    cout&lt;&lt;endl;
+    func3(); //构建，析构
+    cout&lt;&lt;endl;
+    Foo f3 = func3(); //编译器相关
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="类内和类外进行运算符重载的方法"><a href="#类内和类外进行运算符重载的方法" class="headerlink" title="类内和类外进行运算符重载的方法"></a>类内和类外进行运算符重载的方法</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+
+class comp
+&#123;
+public:
+    double re,im;
+public:
+    comp(double r=0.0,double i=0.0):re(r),im(i)&#123;&#125;
+    comp operator+(comp);
+    void printObj()&#123;std::cout&lt;&lt;&quot;re=&quot;&lt;&lt;re&lt;&lt;&quot;im=&quot;&lt;&lt;im&lt;&lt;&quot;\n&quot;;&#125;
+&#125;;
+
+comp comp::operator+(comp b)
+&#123;
+    comp ret;
+    ret.re = re + b.re;
+    ret.im = im + b.im;
+    return ret;
+&#125;
+
+int main()
+&#123;
+    comp x(1.0,2.0);
+    comp y(3.0,4.0);
+    comp z;
+    x.printObj();
+    y.printObj();
+    z = x+y;
+    z.printObj();
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>以上是类成员声明的运算符重载<br>#include <cstdlib><br>#include <iostream></p>
+<pre><code>class comp
+&#123;
+public:
+    double re,im;
+public:
+    comp(double r=0.0,double i=0.0):re(r),im(i)&#123;&#125;
+    void printObj()&#123;std::cout&lt;&lt;&quot;re=&quot;&lt;&lt;re&lt;&lt;&quot;im=&quot;&lt;&lt;im&lt;&lt;&quot;\n&quot;;&#125;
+&#125;;
+
+comp operator+(comp a,comp b)
+&#123;
+    comp ret;
+    ret.re = a.re + b.re;
+    ret.im = a.im + b.im;
+    return ret;
+&#125;
+
+int main()
+&#123;
+    comp x(1.0,2.0);
+    comp y(3.0,4.0);
+    comp z;
+    x.printObj();
+    y.printObj();
+    z = x+y;
+    z.printObj();
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>以上是函数声明的运算符重载</p>
+<h2 id="全局变量首次运行时初始化的包装"><a href="#全局变量首次运行时初始化的包装" class="headerlink" title="全局变量首次运行时初始化的包装"></a>全局变量首次运行时初始化的包装</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+int&amp; use_count()
+&#123;
+    static int uc = 0;
+    return uc;
+&#125;
+
+int main()
+&#123;
+    cout&lt;&lt;++use_count()&lt;&lt;endl;
+    cout&lt;&lt;++use_count()&lt;&lt;endl;
+    cout&lt;&lt;++use_count()&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="重载-new-函数-实现定址分配类"><a href="#重载-new-函数-实现定址分配类" class="headerlink" title="重载 new 函数 实现定址分配类"></a>重载 new 函数 实现定址分配类</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo(int)&#123;&#125;;
+    void* operator new(size_t,void* p)&#123;return p;&#125;
+&#125;;
+
+
+int main()
+&#123;
+    void* buf = reinterpret_cast&lt;void*&gt;(0xF00F);
+    Foo* p2 = new(buf)Foo(3);
+    printf(&quot;%d\n&quot;,p2);
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="类成员类构造函数调用顺序"><a href="#类成员类构造函数调用顺序" class="headerlink" title="类成员类构造函数调用顺序"></a>类成员类构造函数调用顺序</h2><p>按照类成员声明顺序，非构造函数冒号后的顺序<br>#include <cstdlib><br>#include <iostream><br>using namespace std;</p>
+<pre><code>class Bar1
+&#123;
+public:
+    Bar1()&#123;cout&lt;&lt;&quot;Bar1 Construct&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+class Bar2
+&#123;
+public:
+    Bar2()&#123;cout&lt;&lt;&quot;Bar2 Construct&quot;&lt;&lt;endl;&#125;
+&#125;;
+
+class Foo
+&#123;
+public:
+    Foo():b2(),b1()&#123;&#125;
+private:
+    Bar1 b1;
+    Bar2 b2;
+&#125;;
+
+int main()
+&#123;
+    Foo f;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="有-const-对象的类-不能使用默认构造函数"><a href="#有-const-对象的类-不能使用默认构造函数" class="headerlink" title="有 const 对象的类 不能使用默认构造函数"></a>有 const 对象的类 不能使用默认构造函数</h2><pre><code>#include &lt;cstdlib&gt;
+#include &lt;iostream&gt;
+
+class Foo
+&#123;
+public:
+    Foo(int aa):a(aa)&#123;&#125;
+    const int a;
+&#125;;
+
+int main()
+&#123;
+    Foo f(3);
+    return 0;
+&#125;</code></pre>
+<h2 id="保持-const-member-function，实现修改成员变量的-3-种方法"><a href="#保持-const-member-function，实现修改成员变量的-3-种方法" class="headerlink" title="保持 const member function，实现修改成员变量的 3 种方法"></a>保持 const member function，实现修改成员变量的 3 种方法</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo(int n):val(n),changed(false)&#123;&#125;
+    int getVal()const
+    &#123;
+        Foo *fp = const_cast&lt;Foo*&gt;(this);
+        fp-&gt;changed=true;
+        //changed=true; //error: in read-only structure
+        return val;
+    &#125;;
+    bool isVisit()const&#123;return changed;&#125;
+private:
+    int val;
+    bool changed;
+&#125;;
+
+int main()
+&#123;
+    Foo f(10);
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    cout&lt;&lt;f.getVal()&lt;&lt;endl;
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>一种更好的方法是使用 mutable 关键字，表示即使在 const 情况下，仍然能被修改<br>#include <iostream><br>#include <cstdlib><br>using namespace std;</p>
+<pre><code>class Foo
+&#123;
+public:
+    Foo(int n):val(n),changed(false)&#123;&#125;
+    int getVal()const
+    &#123;
+        changed=true; //OK
+        return val;
+    &#125;;
+    bool isVisit()const&#123;return changed;&#125;
+private:
+    int val;
+    mutable bool changed;
+&#125;;
+
+int main()
+&#123;
+    Foo f(10);
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    cout&lt;&lt;f.getVal()&lt;&lt;endl;
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>如果一个类中有很多需要被修改，可以单独作为一个成员类<br>#include <iostream><br>#include <cstdlib><br>using namespace std;</p>
+<pre><code>class Bar
+&#123;
+public:
+    Bar():changed(false),val_count(0)&#123;&#125;
+    bool changed;
+    int val_count;
+&#125;;
+
+class Foo
+&#123;
+public:
+    Foo(int n):val(n),b(new Bar())&#123;&#125;
+    int getVal()const
+    &#123;
+        b-&gt;changed=true; //ok
+        b-&gt;val_count++;
+        return val;
+    &#125;;
+    bool isVisit()const&#123;return b-&gt;changed;&#125;
+    int getValCount()const&#123;return b-&gt;val_count;&#125;
+private:
+    int val;
+    Bar* b;
+&#125;;
+
+int main()
+&#123;
+    Foo f(10);
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    cout&lt;&lt;f.getValCount()&lt;&lt;endl;
+
+    cout&lt;&lt;f.getVal()&lt;&lt;endl;
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    cout&lt;&lt;f.getValCount()&lt;&lt;endl;
+
+    cout&lt;&lt;f.getVal()&lt;&lt;endl;
+    cout&lt;&lt;f.isVisit()&lt;&lt;endl;
+    cout&lt;&lt;f.getValCount()&lt;&lt;endl;
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>特别注意上例中，指针 b 的初始化的写法，其实，在构造函数冒号后的 member(val)相当于 member=val</p>
+<h2 id="很有挑战性的题目（不断更新）"><a href="#很有挑战性的题目（不断更新）" class="headerlink" title="很有挑战性的题目（不断更新）"></a>很有挑战性的题目（不断更新）</h2><ol>
+<li>The second initialization below fails to compile. What can we infer about the definition of vector?</li>
+</ol>
+<p>1 vector&lt;int&gt; v1(42); //ok:42 elements, each 0<br>2 vector&lt;int&gt; v2 = 42; //error:what does this error tell us about vector?</p>
+<ol start="2">
+<li>Given this program:<br>#include <iostream><pre><code>int main()
+&#123;
+    std::cout&lt;&lt;&quot;Hello, world!\n&quot;&lt;&lt;endl;
+    return 0;
+&#125;</code></pre>
+modify it to produce this output:<br>Initialize<br>Hello,world!<br>Clean up<br>Do not change main() in any way.</li>
+</ol>
+<h2 id="拷贝函数-传引用时不调用拷贝函数-传值时调用拷贝函数"><a href="#拷贝函数-传引用时不调用拷贝函数-传值时调用拷贝函数" class="headerlink" title="拷贝函数 传引用时不调用拷贝函数 传值时调用拷贝函数"></a>拷贝函数 传引用时不调用拷贝函数 传值时调用拷贝函数</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo(int ii):i(ii)&#123;&#125;
+    Foo(const Foo &amp;other)&#123;cout&lt;&lt;&quot;c&quot;&lt;&lt;endl;i=other.i;&#125;
+private:
+    int i;
+&#125;;
+
+void Bar1(Foo &amp;f)
+&#123;
+&#125;
+
+int Bar2(Foo f)
+&#123;
+&#125;
+
+int main()
+&#123;
+    Foo f(9);
+    cout&lt;&lt;&quot;Bar1&quot;&lt;&lt;endl;
+    Bar1(f);
+    cout&lt;&lt;&quot;Bar2&quot;&lt;&lt;endl;
+    Bar2(f); //隐式拷贝
+
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="静态变量-静态函数-静态变量作为默认函数参数"><a href="#静态变量-静态函数-静态变量作为默认函数参数" class="headerlink" title="静态变量 静态函数 静态变量作为默认函数参数"></a>静态变量 静态函数 静态变量作为默认函数参数</h2><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+using namespace std;
+
+class Foo
+&#123;
+public:
+    Foo(int ii):i(ii)&#123;&#125;
+    int getInt()&#123;return i;&#125;
+private:
+    int i;
+&#125;;
+
+class Bar
+&#123;
+public:
+    static int FooVal()&#123;c++; return f.getInt();&#125;
+    int callsFooVal()&#123;return c;&#125;
+    int setValb(int bb=c)&#123;b=bb;return 0;&#125; //可变的默认值
+    int show()&#123;return b;&#125;
+private:
+    int b;
+    static int c;
+    static Foo f;
+&#125;;
+
+int Bar::c=0;
+Foo Bar::f(9);
+
+int main()
+&#123;
+    Bar b;
+    cout&lt;&lt;Bar::FooVal()&lt;&lt;endl;
+    cout&lt;&lt;b.callsFooVal()&lt;&lt;endl;
+    cout&lt;&lt;b.setValb()&lt;&lt;endl;
+    cout&lt;&lt;b.show()&lt;&lt;endl;
+    cout&lt;&lt;&quot;---------&quot;&lt;&lt;endl;
+    cout&lt;&lt;Bar::FooVal()&lt;&lt;endl;
+    cout&lt;&lt;b.callsFooVal()&lt;&lt;endl;
+    cout&lt;&lt;b.setValb()&lt;&lt;endl;
+    cout&lt;&lt;b.show()&lt;&lt;endl;
+    cout&lt;&lt;&quot;---------&quot;&lt;&lt;endl;
+    cout&lt;&lt;Bar::FooVal()&lt;&lt;endl;
+    cout&lt;&lt;b.callsFooVal()&lt;&lt;endl;
+    cout&lt;&lt;b.setValb()&lt;&lt;endl;
+    cout&lt;&lt;b.show()&lt;&lt;endl;
+    cout&lt;&lt;&quot;---------&quot;&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<h2 id="c-定义类时的隐式拷贝函数和隐式构造函数"><a href="#c-定义类时的隐式拷贝函数和隐式构造函数" class="headerlink" title="c++定义类时的隐式拷贝函数和隐式构造函数"></a><code>c++</code>定义类时的隐式拷贝函数和隐式构造函数</h2><p>显式就是调用构造，copy 函数，隐式就是系统帮你调用，搜新婆啊。<br>#include <cstdlib><br>#include <iostream><br>using namespace std;</p>
+<pre><code>class Foo
+&#123;
+public:
+    explicit Foo(int ii):i(ii)&#123;&#125;
+public:
+    Foo(const Foo &amp;other)&#123;i=other.i;&#125;
+private:
+    int i;
+public:
+    int show()&#123;return i;&#125;
+&#125;;
+
+int main()
+&#123;
+    Foo tem(20);
+    Foo f = tem;
+    cout&lt;&lt;f.show()&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>显式构造，隐式 copy，可运行。<br>#include <cstdlib><br>#include <iostream><br>using namespace std;</p>
+<pre><code>class Foo
+&#123;
+public:
+    explicit Foo(int ii):i(ii)&#123;&#125;
+public:
+    explicit Foo(const Foo &amp;other)&#123;i=other.i;&#125;
+private:
+    int i;
+public:
+    int show()&#123;return i;&#125;
+&#125;;
+
+int main()
+&#123;
+    Foo f = 20;
+    cout&lt;&lt;f.show()&lt;&lt;endl;
+    system(&quot;PAUSE&quot;);
+    return 0;
+&#125;</code></pre>
+<p>显式构造，显式拷贝，不能运行，需要都去除 explicit 关键字</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>elprup
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://www.elprup.com/2010/11/27/cpp-pieces/" title="C++代码例子集合">http://www.elprup.com/2010/11/27/cpp-pieces/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2010/10/30/algorithm-note/" rel="prev" title="解决算法问题的思路">
+                  <i class="fa fa-chevron-left"></i> 解决算法问题的思路
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2012/02/01/sudo-pipe-permission/" rel="next" title="脚本中的sudo命令使用管道时的权限问题">
+                  脚本中的sudo命令使用管道时的权限问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elprup</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1279287595&web_id=1279287595"></script>
+  </div>
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

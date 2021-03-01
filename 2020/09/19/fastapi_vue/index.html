@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/uploads/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.elprup.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+
+  <meta name="description" content="概述传统网站由一个 web 框架完全承担，例如基于 nodejs 的 express，koa，基于 python 的 django，tornado。新型网站演变为用 vue 开发前端系统，使用 api 框架开发后端 api 请求接口的模式。本文就介绍一下后端使用 python 的 fastapi 框架开发 api 接口，前端使用 vue 框架开发界面的方式快速开发网站。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 python fastapi+vue 快速搭建网站">
+<meta property="og:url" content="http://www.elprup.com/2020/09/19/fastapi_vue/index.html">
+<meta property="og:site_name" content="elprup&#39;s blog">
+<meta property="og:description" content="概述传统网站由一个 web 框架完全承担，例如基于 nodejs 的 express，koa，基于 python 的 django，tornado。新型网站演变为用 vue 开发前端系统，使用 api 框架开发后端 api 请求接口的模式。本文就介绍一下后端使用 python 的 fastapi 框架开发 api 接口，前端使用 vue 框架开发界面的方式快速开发网站。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-19T04:39:00.000Z">
+<meta property="article:modified_time" content="2021-03-01T21:26:37.531Z">
+<meta property="article:author" content="elprup">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.elprup.com/2020/09/19/fastapi_vue/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>使用 python fastapi+vue 快速搭建网站 | elprup's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59147356-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-59147356-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">elprup's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA-fastapi-%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">搭建 fastapi 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-fastapi"><span class="nav-number">2.1.</span> <span class="nav-text">安装 fastapi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E5%86%99-api-%E6%8E%A5%E5%8F%A3%E6%96%87%E4%BB%B6-backend-app-init-py"><span class="nav-number">2.2.</span> <span class="nav-text">编写 api 接口文件 backend&#x2F;app&#x2F;init.py</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E8%A1%8C%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.3.</span> <span class="nav-text">运行后端服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81%E6%98%AF%E5%90%A6%E8%BF%90%E8%A1%8C%E6%88%90%E5%8A%9F"><span class="nav-number">2.4.</span> <span class="nav-text">验证是否运行成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90%E6%96%87%E6%A1%A3"><span class="nav-number">2.5.</span> <span class="nav-text">查看自动生成文档</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA-vue-%E5%89%8D%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">搭建 vue 前端</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0-hello-world-%E9%A1%B5%E9%9D%A2"><span class="nav-number">3.1.</span> <span class="nav-text">添加 hello world 页面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E5%AF%B9-API-%E8%AF%B7%E6%B1%82"><span class="nav-number">3.2.</span> <span class="nav-text">添加对 API 请求</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%86-vue-%E7%BC%96%E8%AF%91%EF%BC%8C%E7%94%B1-fastapi-%E6%89%98%E7%AE%A1"><span class="nav-number">4.</span> <span class="nav-text">将 vue 编译，由 fastapi 托管</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-vue-%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%E7%9A%84%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="nav-number">5.1.</span> <span class="nav-text">修改 vue 资源文件的存储位置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%BC%95%E7%94%A8"><span class="nav-number">7.</span> <span class="nav-text">相关引用</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="elprup"
+      src="/uploads/images/avatar.png">
+  <p class="site-author-name" itemprop="name">elprup</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/elprup" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;elprup" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/371973/elprup" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;371973&#x2F;elprup" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.elprup.com/2020/09/19/fastapi_vue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/avatar.png">
+      <meta itemprop="name" content="elprup">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="elprup's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 python fastapi+vue 快速搭建网站
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-19 12:39:00" itemprop="dateCreated datePublished" datetime="2020-09-19T12:39:00+08:00">2020-09-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-02 05:26:37" itemprop="dateModified" datetime="2021-03-02T05:26:37+08:00">2021-03-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>传统网站由一个 web 框架完全承担，例如基于 nodejs 的 express，koa，基于 python 的 django，tornado。新型网站演变为用 vue 开发前端系统，使用 api 框架开发后端 api 请求接口的模式。本文就介绍一下后端使用 python 的 fastapi 框架开发 api 接口，前端使用 vue 框架开发界面的方式快速开发网站。</p>
+<a id="more"></a>
+
+<h1 id="搭建-fastapi-服务"><a href="#搭建-fastapi-服务" class="headerlink" title="搭建 fastapi 服务"></a>搭建 fastapi 服务</h1><p>首先建立一个项目文件夹，并建立两个子文件夹 backend 和 frontend。后端的代码将放置在 backend 文件夹中，前端的代码放在 frontend 文件夹里。</p>
+<h2 id="安装-fastapi"><a href="#安装-fastapi" class="headerlink" title="安装 fastapi"></a>安装 fastapi</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> backend</span><br><span class="line">pip install fastapi uvicorn</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写-api-接口文件-backend-app-init-py"><a href="#编写-api-接口文件-backend-app-init-py" class="headerlink" title="编写 api 接口文件 backend/app/init.py"></a>编写 api 接口文件 backend/app/<strong>init</strong>.py</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Optional</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_root</span>():</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;Hello&quot;</span>: <span class="string">&quot;World&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/items/&#123;item_id&#125;&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_item</span>(<span class="params">item_id: int, q: Optional[str] = None</span>):</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;item_id&quot;</span>: item_id, <span class="string">&quot;q&quot;</span>: q&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="运行后端服务"><a href="#运行后端服务" class="headerlink" title="运行后端服务"></a>运行后端服务</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uvicorn app:app --reload --host 0.0.0.0</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证是否运行成功"><a href="#验证是否运行成功" class="headerlink" title="验证是否运行成功"></a>验证是否运行成功</h2><p>curl <a target="_blank" rel="noopener" href="http://127.0.0.1:8000/items/5?q=somequery">http://127.0.0.1:8000/items/5?q=somequery</a></p>
+<h2 id="查看自动生成文档"><a href="#查看自动生成文档" class="headerlink" title="查看自动生成文档"></a>查看自动生成文档</h2><p><a target="_blank" rel="noopener" href="http://127.0.0.1:8000/docs">http://127.0.0.1:8000/docs</a></p>
+<h1 id="搭建-vue-前端"><a href="#搭建-vue-前端" class="headerlink" title="搭建 vue 前端"></a>搭建 vue 前端</h1><p>这里我们采用了 ant design pro vue 作为我们的脚手架。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> frontend</span><br><span class="line">git <span class="built_in">clone</span> --depth=1 https://github.com/vueComponent/ant-design-vue-pro.git .</span><br><span class="line">yarn install</span><br><span class="line">yarn serve</span><br></pre></td></tr></table></figure>
+
+<p>完成后，前端系统就运行在 8000 端口了。但此时，我们看到的前端只是一个静态网站，并没有动态内容。所有和后端的交互都是通过 mock 方式模拟的。在正式环境中，这些请求需要和之前搭建的 fastapi 后端交互完成。</p>
+<h2 id="添加-hello-world-页面"><a href="#添加-hello-world-页面" class="headerlink" title="添加 hello world 页面"></a>添加 hello world 页面</h2><p>在 frontend/src/views/helloworld 目录下，加入我们的页面 HelloWorld.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;hello world&lt;&#x2F;h1&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>将 hello 页面加入路由，修改 frontend/src/config/router.config.js,把 asyncRouterMap 修改为如下内容</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> asyncRouterMap = [</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">&quot;/&quot;</span>,</span><br><span class="line">        name: <span class="string">&quot;index&quot;</span>,</span><br><span class="line">        component: BasicLayout,</span><br><span class="line">        meta: &#123; <span class="attr">title</span>: <span class="string">&quot;menu.home&quot;</span> &#125;,</span><br><span class="line">        redirect: <span class="string">&quot;/helloworld&quot;</span>,</span><br><span class="line">        children: [</span><br><span class="line">            <span class="comment">// helloworld</span></span><br><span class="line">            &#123;</span><br><span class="line">                path: <span class="string">&quot;/helloworld&quot;</span>,</span><br><span class="line">                name: <span class="string">&quot;hello-world&quot;</span>,</span><br><span class="line">                component: HelloWorld,</span><br><span class="line">                meta: &#123;</span><br><span class="line">                    title: <span class="string">&quot;menu.hello&quot;</span>,</span><br><span class="line">                    icon: <span class="string">&quot;folder&quot;</span>,</span><br><span class="line">                    permission: [<span class="string">&quot;dashboard&quot;</span>],</span><br><span class="line">                &#125;,</span><br><span class="line">            &#125;,</span><br><span class="line">        ],</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        path: <span class="string">&quot;*&quot;</span>,</span><br><span class="line">        redirect: <span class="string">&quot;/404&quot;</span>,</span><br><span class="line">        hidden: <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>此时，菜单的名字将显示 menu.hello，原因是我们没有在国际化中添加对 menu.hello 词条的翻译选项，我们修改 frontend/src/locales/lang/en-US.js 增加如下选项</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> locale = &#123;</span><br><span class="line">  message: <span class="string">&#x27;-&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;menu.home&#x27;</span>: <span class="string">&#x27;Home&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;menu.dashboard&#x27;</span>: <span class="string">&#x27;Dashboard&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;menu.hello&#x27;</span>: <span class="string">&#x27;Hello&#x27;</span>, <span class="comment">// 新增的内容</span></span><br></pre></td></tr></table></figure>
+
+<p>同样修改 frontend/src/locales/lang/zh-CN.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> locale = &#123;</span><br><span class="line">  message: <span class="string">&#x27;-&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;menu.home&#x27;</span>: <span class="string">&#x27;主页&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;menu.hello&#x27;</span>: <span class="string">&#x27;问候&#x27;</span>, <span class="comment">// 新增的内容</span></span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就能看到正确的支持多语言的版本了。</p>
+<h2 id="添加对-API-请求"><a href="#添加对-API-请求" class="headerlink" title="添加对 API 请求"></a>添加对 API 请求</h2><p>在 frondend/src/api/hello.js 中添加和 hello 相关的 api</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; axios &#125; <span class="keyword">from</span> <span class="string">&quot;@/utils/request&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> api = &#123;</span><br><span class="line">    Hello: <span class="string">&quot;hello&quot;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> api;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">getHello</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> axios.get(api.Hello, &#123;&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了调试方便，我们使用 mock 功能在没有后端联调情况下模拟后端操作, 修改 frontend/src/views/helloworld/HelloWorld.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;&#123;&#123; loading &#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">        &lt;h1&gt;&#123;&#123; data &#125;&#125;&lt;&#x2F;h1&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import &#123; getHello &#125; from &quot;@&#x2F;api&#x2F;hello&quot;;</span><br><span class="line">import &#123; PageView &#125; from &quot;@&#x2F;layouts&quot;;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">    name: &quot;HelloWorld&quot;,</span><br><span class="line">    components: &#123;</span><br><span class="line">        PageView,</span><br><span class="line">    &#125;,</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            data: [],</span><br><span class="line">            loading: false,</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        this.fetch();</span><br><span class="line">    &#125;,</span><br><span class="line">    watch: &#123;</span><br><span class="line">        $route(to, from) &#123;</span><br><span class="line">            this.fetch();</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    computed: &#123;</span><br><span class="line">        title() &#123;</span><br><span class="line">            return &#96;hello, world&#96;;</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        fetch() &#123;</span><br><span class="line">            this.loading &#x3D; true;</span><br><span class="line">            return getHello()</span><br><span class="line">                .then((data) &#x3D;&gt; &#123;</span><br><span class="line">                    this.loading &#x3D; false;</span><br><span class="line">                    this.data &#x3D; data;</span><br><span class="line">                &#125;)</span><br><span class="line">                .catch((err) &#x3D;&gt; &#123;</span><br><span class="line">                    this.$notification.error(&#123;</span><br><span class="line">                        duration: null,</span><br><span class="line">                        message: err,</span><br><span class="line">                    &#125;);</span><br><span class="line">                    this.loading &#x3D; false;</span><br><span class="line">                &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>这样，访问首页时就能够看到后台模拟 mock 接口传回的数据。</p>
+<h1 id="将-vue-编译，由-fastapi-托管"><a href="#将-vue-编译，由-fastapi-托管" class="headerlink" title="将 vue 编译，由 fastapi 托管"></a>将 vue 编译，由 fastapi 托管</h1><p>编译 vue 代码，生成的产品正式代码在 dist 目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yarn install &amp;&amp; yarn run lint --no-fix &amp;&amp; yarn run build --mode production</span><br></pre></td></tr></table></figure>
+
+<p>把编译好的 dist 代码全部移动到 backend 的 public 目录下。这个过程我们可以使用 bash 脚本自动化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">fvtlog</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> 【 FastAPIVueTemplate Build 】====\&gt; <span class="variable">$@</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">build_dir=$(<span class="built_in">pwd</span>)</span><br><span class="line">client_dir=$(<span class="built_in">pwd</span>)/frontend</span><br><span class="line">server_dir=$(<span class="built_in">pwd</span>)/backend</span><br><span class="line"></span><br><span class="line">ENV=<span class="variable">$1</span></span><br><span class="line">ENV=<span class="string">&quot;<span class="variable">$&#123;ENV:-production&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">buildClient</span></span>() &#123;</span><br><span class="line">    fvtlog <span class="string">&quot;start building client for FastAPIVueTemplate...&quot;</span></span><br><span class="line">    <span class="built_in">cd</span> <span class="variable">$client_dir</span></span><br><span class="line">    yarn install &amp;&amp; yarn run lint --no-fix &amp;&amp; yarn run build --mode <span class="variable">$ENV</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">buildServer</span></span>() &#123;</span><br><span class="line">    fvtlog <span class="string">&quot;start build server for FastAPIVueTemplate&quot;</span></span><br><span class="line">    rm -rf <span class="variable">$server_dir</span>/public</span><br><span class="line">    <span class="built_in">cd</span> <span class="variable">$build_dir</span></span><br><span class="line">    mv <span class="variable">$client_dir</span>/dist <span class="variable">$server_dir</span>/public</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">buildClient</span><br><span class="line">buildServer</span><br></pre></td></tr></table></figure>
+
+<p>此时，我们需要配置 fastapi 完成以下的路由</p>
+<ol>
+<li>对/api 请求使用 fastapi 的处理逻辑</li>
+<li>对/api 下的其他未实现请求返回 404</li>
+<li>对所有其他请求尝试加载 public 目录下的资源文件，若失败，则加载 index.html，但路径仍保持请求路径。</li>
+</ol>
+<p>这就是 vue 文件托管的 html5 history mode <a target="_blank" rel="noopener" href="https://router.vuejs.org/guide/essentials/history-mode.html">https://router.vuejs.org/guide/essentials/history-mode.html</a></p>
+<p>修改 backend/app/<strong>init</strong>.py 为如下内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os.path</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span>  FastAPI</span><br><span class="line"><span class="keyword">from</span> fastapi.staticfiles <span class="keyword">import</span> StaticFiles</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use this to serve a public/index.html</span></span><br><span class="line"><span class="keyword">from</span> starlette.responses <span class="keyword">import</span> FileResponse</span><br><span class="line"><span class="keyword">from</span> starlette.responses <span class="keyword">import</span> PlainTextResponse</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(&quot;/api/auth/login&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_auth_login</span>():</span></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;id&#x27;</span>: <span class="string">&#x27;id_001&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;avatar&#x27;</span>: <span class="string">&#x27;https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;status&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&#x27;telephone&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;lastLoginIp&#x27;</span>: <span class="string">&#x27;27.154.74.117&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;lastLoginTime&#x27;</span>: <span class="number">1534837621348</span>,</span><br><span class="line">        <span class="string">&#x27;creatorId&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;createTime&#x27;</span>: <span class="number">1497160610259</span>,</span><br><span class="line">        <span class="string">&#x27;deleted&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&#x27;roleId&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;lang&#x27;</span>: <span class="string">&#x27;zh-CN&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;token&#x27;</span>: <span class="string">&#x27;4291d7da9005377ec9aec4a71ea837f&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dict(result=data, message=<span class="string">&#x27;&#x27;</span>, code=<span class="number">200</span>, _status=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/api/user/info&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user_info</span>():</span></span><br><span class="line">    info = &#123;</span><br><span class="line">        <span class="string">&#x27;id&#x27;</span>: <span class="string">&#x27;4291d7da9005377ec9aec4a71ea837f&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;天野远子&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;username&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;password&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;avatar&#x27;</span>: <span class="string">&#x27;/avatar2.jpg&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;status&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&#x27;telephone&#x27;</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;lastLoginIp&#x27;</span>: <span class="string">&#x27;27.154.74.117&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;lastLoginTime&#x27;</span>: <span class="number">1534837621348</span>,</span><br><span class="line">        <span class="string">&#x27;creatorId&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;createTime&#x27;</span>: <span class="number">1497160610259</span>,</span><br><span class="line">        <span class="string">&#x27;merchantCode&#x27;</span>: <span class="string">&#x27;TLif2btpzg079h15bk&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;deleted&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&#x27;roleId&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;role&#x27;</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    role = &#123;</span><br><span class="line">        <span class="string">&#x27;id&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;name&#x27;</span>: <span class="string">&#x27;管理员&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;describe&#x27;</span>: <span class="string">&#x27;拥有所有权限&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;status&#x27;</span>: <span class="number">1</span>,</span><br><span class="line">        <span class="string">&#x27;creatorId&#x27;</span>: <span class="string">&#x27;system&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;createTime&#x27;</span>: <span class="number">1497160610259</span>,</span><br><span class="line">        <span class="string">&#x27;deleted&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">        <span class="string">&#x27;permissions&#x27;</span>: [&#123;</span><br><span class="line">        <span class="string">&#x27;roleId&#x27;</span>: <span class="string">&#x27;admin&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;permissionId&#x27;</span>: <span class="string">&#x27;dashboard&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;permissionName&#x27;</span>: <span class="string">&#x27;仪表盘&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;actions&#x27;</span>: <span class="string">&#x27;[&#123;&quot;action&quot;:&quot;add&quot;,&quot;defaultCheck&quot;:false,&quot;describe&quot;:&quot;新增&quot;&#125;,&#123;&quot;action&quot;:&quot;query&quot;,&quot;defaultCheck&quot;:false,&quot;describe&quot;:&quot;查询&quot;&#125;,&#123;&quot;action&quot;:&quot;get&quot;,&quot;defaultCheck&quot;:false,&quot;describe&quot;:&quot;详情&quot;&#125;,&#123;&quot;action&quot;:&quot;update&quot;,&quot;defaultCheck&quot;:false,&quot;describe&quot;:&quot;修改&quot;&#125;,&#123;&quot;action&quot;:&quot;delete&quot;,&quot;defaultCheck&quot;:false,&quot;describe&quot;:&quot;删除&quot;&#125;]&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;actionEntitySet&#x27;</span>: [&#123;</span><br><span class="line">            <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;add&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;describe&#x27;</span>: <span class="string">&#x27;新增&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;defaultCheck&#x27;</span>: <span class="literal">False</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;query&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;describe&#x27;</span>: <span class="string">&#x27;查询&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;defaultCheck&#x27;</span>: <span class="literal">False</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;get&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;describe&#x27;</span>: <span class="string">&#x27;详情&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;defaultCheck&#x27;</span>: <span class="literal">False</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;update&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;describe&#x27;</span>: <span class="string">&#x27;修改&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;defaultCheck&#x27;</span>: <span class="literal">False</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            <span class="string">&#x27;action&#x27;</span>: <span class="string">&#x27;delete&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;describe&#x27;</span>: <span class="string">&#x27;删除&#x27;</span>,</span><br><span class="line">            <span class="string">&#x27;defaultCheck&#x27;</span>: <span class="literal">False</span></span><br><span class="line">        &#125;],</span><br><span class="line">        <span class="string">&#x27;actionList&#x27;</span>: <span class="literal">None</span>,</span><br><span class="line">        <span class="string">&#x27;dataAccess&#x27;</span>: <span class="literal">None</span></span><br><span class="line">    &#125;]&#125;</span><br><span class="line">    info[<span class="string">&#x27;role&#x27;</span>] = role</span><br><span class="line">    <span class="keyword">return</span> dict(result=info, message=<span class="string">&#x27;&#x27;</span>, code=<span class="number">200</span>, _status=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.post(&quot;/api/auth/2step-code&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">auth_2step_code</span>():</span></span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="string">&#x27;stepCode&#x27;</span>: <span class="number">0</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/api/hello&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span>():</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&#x27;message&#x27;</span>: <span class="string">&#x27;hello world when &#x27;</span>+str(int(time.time()))&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/api/&#123;wildcard&#125;&quot;)</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_api_404</span>():</span></span><br><span class="line">    <span class="keyword">return</span> PlainTextResponse(<span class="string">&quot;api not found&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/&quot;)</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_index</span>():</span></span><br><span class="line">    <span class="keyword">return</span> FileResponse(<span class="string">&#x27;public/index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.get(&quot;/&#123;whatever:path&#125;&quot;)</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_static_files_or_404</span>(<span class="params">whatever</span>):</span></span><br><span class="line">    <span class="comment"># try open file for path</span></span><br><span class="line">    file_path = os.path.join(<span class="string">&quot;public&quot;</span>,whatever)</span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(file_path):</span><br><span class="line">        <span class="keyword">return</span> FileResponse(file_path)</span><br><span class="line">    <span class="keyword">return</span> FileResponse(<span class="string">&#x27;public/index.html&#x27;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>有几个要点：</p>
+<ol>
+<li>app.get 的参数是路径名，注意和顺序相关，优先匹配最早的符合。另外，如果要匹配的参数中包括/，那么需要在参数后加：path 修饰符</li>
+<li>按照顺序分别匹配/api 路径，根目录，然后将所有未匹配请求发送给最后一个函数。如果找到静态文件则返回其内容，否则就直接用 index.html 的内容返回。vue 会处理具体的路由渲染规则。</li>
+<li>ant design pro 本身自带权限控制系统，但是需要注意的是，原有的 mock 文件中的响应是需要加上包装的，比如 result 等于 mock 中 builder 的参数。这个没有文档提及，这块浪费了很多调试时间。</li>
+<li>还有一些接口没有实现，这个文件只是包含了刚好能够让登陆用户进入系统的最小 api 需要的接口</li>
+</ol>
+<h1 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h1><p>至此，我们完成了一个由 fastapi 托管的 vue 开发的网页。但还有一个小问题：静态文件的托管。我们知道，vue 的资源文件通常都是非常大的，少则几 M，如果按照现在的 fastapi 接口，每次访问都会向服务器请求所有文件下载，那必然是非常低效的。我们希望 fastapi 能和 nginx 的静态文件托管那样，在静态文件没有变化时访问 not modified 响应，而且我们希望采用 gzip 压缩方式提高传输效率。</p>
+<h2 id="修改-vue-资源文件的存储位置"><a href="#修改-vue-资源文件的存储位置" class="headerlink" title="修改 vue 资源文件的存储位置"></a>修改 vue 资源文件的存储位置</h2><p>默认打包后 vue 的资源文件将根据文件类型，分别存储在 js，css 和 img 目录下，我们希望这些文件统一放在 public 目录下，方便我们在 fastapi 中配置对该目录下的所有文件都托管给静态文件管理模块。我们需要在 vue.config.js 文件中加入这个配置：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vue.config.js</span></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    assetsDir: <span class="string">&quot;public&quot;</span>,</span><br><span class="line">    devServer: &#123;</span><br><span class="line">        proxy: &#123;</span><br><span class="line">            <span class="string">&quot;/api&quot;</span>: &#123;</span><br><span class="line">                target: <span class="string">&quot;【公网地址】&quot;</span>,</span><br><span class="line">                secure: <span class="literal">false</span>,</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这样所有资源文件都会在 public 目录下。</p>
+<p>然后我们在 fastapi 中修改对/public 路径下文件的服务</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app.mount(<span class="string">&quot;/public&quot;</span>, StaticFiles(directory=<span class="string">&quot;public/public&quot;</span>), name=<span class="string">&quot;public&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样，fastapi 会提供资源文件的 etag 检查，防止重复下载。另外，可以设置 fastapi 支持 gzip</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI</span><br><span class="line"><span class="keyword">from</span> fastapi.middleware.gzip <span class="keyword">import</span> GZipMiddleware</span><br><span class="line"></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line">app.add_middleware(GZipMiddleware, minimum_size=<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>至此，优化过后刷新网站不会每次都从服务器重新下载资源文件了。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总体而言，fastapi+vue 的部署方式简单高效，能满足一般应用类网站特别是中台的开发需求。但在开发过程中需要注意将 vue 的编译文件托管给 fastapi 时的相关配置。</p>
+<p>项目地址：<a target="_blank" rel="noopener" href="https://github.com/elprup/fastapi-vue-template">https://github.com/elprup/fastapi-vue-template</a></p>
+<h1 id="相关引用"><a href="#相关引用" class="headerlink" title="相关引用"></a>相关引用</h1><p>golang+vue 的实现例子 <a target="_blank" rel="noopener" href="https://github.com/Sloaix/Gofi">https://github.com/Sloaix/Gofi</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>elprup
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://www.elprup.com/2020/09/19/fastapi_vue/" title="使用 python fastapi+vue 快速搭建网站">http://www.elprup.com/2020/09/19/fastapi_vue/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/09/animal-forest/" rel="prev" title="动物之森初体验">
+                  <i class="fa fa-chevron-left"></i> 动物之森初体验
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/25/5g_think/" rel="next" title="5G，移动化，机遇与挑战">
+                  5G，移动化，机遇与挑战 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elprup</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1279287595&web_id=1279287595"></script>
+  </div>
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

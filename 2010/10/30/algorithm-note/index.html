@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/favicon/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/favicon/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/uploads/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.elprup.com","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+
+  <meta name="description" content="算法，包含的问题很多。解决一个算法的过程，是一个工程的过程。不仅需要从数学角度，获得抽象，获得问题可解性，以及复杂度的相关估计，还需要用语言，库，系统调用将其实现，这就需要一些积累的经验。两者共同决定着一个算法问题的解决是否有效，是否优雅，是否可维护，是否易扩展。下面就从两个方面说说算法问题的解决。也为自己整理一下思路。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决算法问题的思路">
+<meta property="og:url" content="http://www.elprup.com/2010/10/30/algorithm-note/index.html">
+<meta property="og:site_name" content="elprup&#39;s blog">
+<meta property="og:description" content="算法，包含的问题很多。解决一个算法的过程，是一个工程的过程。不仅需要从数学角度，获得抽象，获得问题可解性，以及复杂度的相关估计，还需要用语言，库，系统调用将其实现，这就需要一些积累的经验。两者共同决定着一个算法问题的解决是否有效，是否优雅，是否可维护，是否易扩展。下面就从两个方面说说算法问题的解决。也为自己整理一下思路。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2010-10-30T23:01:46.000Z">
+<meta property="article:modified_time" content="2021-03-01T21:26:37.531Z">
+<meta property="article:author" content="elprup">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://www.elprup.com/2010/10/30/algorithm-note/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>解决算法问题的思路 | elprup's blog</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-59147356-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-59147356-1');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">elprup's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="elprup"
+      src="/uploads/images/avatar.png">
+  <p class="site-author-name" itemprop="name">elprup</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/elprup" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;elprup" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/users/371973/elprup" title="StackOverflow → https:&#x2F;&#x2F;stackoverflow.com&#x2F;users&#x2F;371973&#x2F;elprup" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i></a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://www.elprup.com/2010/10/30/algorithm-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/images/avatar.png">
+      <meta itemprop="name" content="elprup">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="elprup's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          解决算法问题的思路
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2010-10-31 07:01:46" itemprop="dateCreated datePublished" datetime="2010-10-31T07:01:46+08:00">2010-10-31</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-02 05:26:37" itemprop="dateModified" datetime="2021-03-02T05:26:37+08:00">2021-03-02</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>算法，包含的问题很多。解决一个算法的过程，是一个工程的过程。不仅需要从数学角度，获得抽象，获得问题可解性，以及复杂度的相关估计，还需要用语言，库，系统调用将其实现，这就需要一些积累的经验。两者共同决定着一个算法问题的解决是否有效，是否优雅，是否可维护，是否易扩展。下面就从两个方面说说算法问题的解决。也为自己整理一下思路。</p>
+<a id="more"></a>
+
+<p>第 0 是仔细看题，常常几个字的差别，题目的意思是完全不一样的，要知道，NP 问题其实和多项式问题，就差了几个字哦。这点我深有体会，经常看了结题报告才发现原来题目没有想象中的那么难。囧。审题可以从以下几个方面入手：1 数据范围 2 给的 case 手动理解答案<br>第一是数学角度。数学抽象是所有问题的第一步，从一个实际的模型，获得一个解的模型，其实属于数学建模的范畴。好在一般算法题都是从抽象问题转化而来，给出的条件常常很特殊，相信有一定做题量以后就能很快的进行建模。建模，首先必须有个初步的模型，才能在脑海中建立起适合问题的模型。这就需要算法经验。在这方面，将基础题一种一种过一遍是很好的方法。这使得你的脑海中起码知道一些基本的模型。举例来说，求最优解问题时候，就会自觉的想到最优解的几种模型，是贪心的，还是动态规划的，或是 NP 难的，在看到配对，关系的问题时，想到是否可以用有向图，无向图，树形图来表示关系，然后用并查集，最短路，最大流等经典算法。当求问题可能解时，是否用回溯模型，或者用递归。抽象是开始一个问题时，是我最头疼的一步，因为本身没有定法。我做题往往将问题抽象不够，最后得到的算法又臭又长。这也是我喜欢模拟题的原因，单从建模方面，很简单，只要足够细心，一定能得到结果。 判断一个抽象优劣的标准就是问题能否变得简单。这里的简单分为两个方面：能并入现有问题的，能将问题简单化的。第一点，算法常常是某个或某几个问题的特例，套用前人的算法，证明都省了，而后者就需要自己分析问题了。这和解一道数学题的过程是一样的，从已知推到未知，从复杂化简。思路当然有几个方面，常用的有：1 改变条件：去掉限制条件，或者加上特例条件，这样常常可以获得解的直观印象， 也可以区分一些贪心和 dp 问题。2 分治 这是通用的思路，一个问题可以分为几个子问题，子问题是否也是主问题的一种，子问题的最优解是否是主问题最优解。 完成以后，就可以开始考虑复杂度了。通常是先给出一种可解方案，再改进复杂度。<br>第二就是工程问题了。这直接决定你的代码是否清晰，可读，易懂。现在算法往往采用全局变量的声明方法避免过多的参数传递，变量也简短概括，颇有数学表达式的气势。况且有程序设计实践中提到的，在局部作用域名字应该简短的条款，那就大胆的采用最简单的变量吧。工程中最重要的其实是数据结构。开始做 bfs 经常用到队列，而数据结构中的队列实现不然用链表，不然就搞的复杂无比，这导致了很多需要用队列的题目我拿到以后很是害怕。最后，发现在算法中，基本没人用 new delete 这样的操作符，取而代之的是超大数组来实现链表。大家的理念是，用完就用下一个。这确实让很多问题简单化了。但是，随着问题越来越复杂，需要的数据结构往往也随着复杂了。看看算法导论里面那几章，从二叉索引树，到红黑树，到 B 树，二项堆，斐波那契堆，这几章到现在我还没理解。这些数据结构都优化了数据操作，但是实现复杂，这时候就需要库出现了。algorithm 头文件的出现，让 coder 少写了不少经典算法，stl 也将数据结构的春风吹到了算法圈。而 boost 库，则是在实用工程中可以看做 stl 一样重要的库。有了库的帮助，就算你不怎么会数据结构，也能写出很高效的程序来。<br>不管怎么说，实践还是需要实践。最简单的方法，就是你的纸和笔。没有 IDE 智能提醒，你能写出多离谱的程序来。一个好的程序员，必须聪明，写高效，整齐的代码。这几个字，需要你用时间去磨练。<br>Good Luck!</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>Post author:  </strong>elprup
+  </li>
+  <li class="post-copyright-link">
+      <strong>Post link: </strong>
+      <a href="http://www.elprup.com/2010/10/30/algorithm-note/" title="解决算法问题的思路">http://www.elprup.com/2010/10/30/algorithm-note/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2007/01/25/guobaorou/" rel="prev" title="锅包肉">
+                  <i class="fa fa-chevron-left"></i> 锅包肉
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2010/11/27/cpp-pieces/" rel="next" title="C++代码例子集合">
+                  C++代码例子集合 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">elprup</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+  <div style="display: none;">
+    <script src="//s95.cnzz.com/z_stat.php?id=1279287595&web_id=1279287595"></script>
+  </div>
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
